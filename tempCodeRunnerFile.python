@@ -1,8 +1,49 @@
 import random
 
+def PrintArray(Numb):
+    Output = ""
+    for i in Numb:
+        Output = Output + str(i) + " "
+    print(Output)
+
+def RecursiveBinarySearh(Numb, Lower, Upper, Find):
+    
+    while Lower <= Upper:
+        mid = (Lower + Upper) // 2
+        
+        if Numb[mid] == Find:
+            return mid
+        elif Numb[mid] < Find:
+            Lower = mid + 1
+        else:
+            Upper = mid - 1
+    return -1
+
+def BubbleSort(Numb):
+    n = len(Numb)
+    
+    for i in range(n - 1):
+        for j in range(n-i-1):
+            if Numb[j] > Numb[j + 1]:
+                Numb[j], Numb[j + 1] = Numb[j + 1], Numb[j]
+    return Numb
+
 Numb = []
 
 for i in range(20):
     Numb.append(random.randint(1, 100))
     
-print(Numb)
+print(PrintArray(Numb))
+print(BubbleSort(Numb))
+print("Sorted")
+print(PrintArray(BubbleSort(Numb)))
+
+try:
+    Find = input("Please enter an integer: ")
+    Search = RecursiveBinarySearh(Numb, 0, 20, int(Find))
+    if Search == -1:
+        print("Not Found")
+    else:
+        print("Found")
+except Exception:
+    print("Error")

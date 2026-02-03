@@ -1,5 +1,5 @@
 from Insertion_Sort import InsertSort
 
-Numb = [5, 4, 7, 8, 6, 0, 9 ,1 , 2, 6, 2, 5, 6, 1]
+Numb = [10, 3, 6, 4, 2, 1, 5, 8, 7, 9, 0]
 
 print(InsertSort(Numb))
