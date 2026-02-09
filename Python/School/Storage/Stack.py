@@ -15,3 +15,19 @@ class Stack:
         return len(self.stack) == 0
     def size(self):
         return len(self.stack)
+    
+myStack = Stack()
+myStack.push('A')
+myStack.push('B')
+myStack.push('C')
+myStack.push('D')
+myStack.push('E')
+myStack.push('F')
+    
+print("Stack: ", myStack.stack)
+print("Pop: ", myStack.pop())
+print("Stack after Pop: ", myStack.stack)
+print("Peek: ", myStack.peek())
+print("isEmpty: ", myStack.isEmpty())
+print("Size: ", myStack.size())
+print("Stack: ", myStack.stack)
