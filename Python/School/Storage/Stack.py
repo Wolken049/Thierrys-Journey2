@@ -4,7 +4,6 @@ class Stack:
     def push(self, element):
         if self.isFull():
             return "Stack is Full"
-        
         self.stack.append(element)
     def pop(self):
         if self.isEmpty():
