@@ -16,7 +16,7 @@ class Stack:
     def isEmpty(self):
         return len(self.stack) == 0
     def isFull(self):
-        return len(self.stack) > 4
+        return len(self.stack) == 4
     def size(self):
         return len(self.stack)
     
