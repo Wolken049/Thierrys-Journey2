@@ -2,7 +2,7 @@ class Stack:
     def __init__(self):
         self.stack = []
     def push(self, element):
-        if self.isFull():
+        if self.isFull() + 1:
             return "Stack is Full"
         self.stack.append(element)
     def pop(self):
