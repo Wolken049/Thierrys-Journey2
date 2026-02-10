@@ -17,6 +17,7 @@ class Queue:
         return len(self.queue)
     
 myQueue = Queue()
+
 myQueue.enqueue('A')
 myQueue.enqueue('B')
 myQueue.enqueue('C')
