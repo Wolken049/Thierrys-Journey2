@@ -6,7 +6,7 @@ class Queue:
             return "Queue is Full"
         self.queue.append(element)
     def dequeue(self):
-        if self.isEmpty():
+        if self.isEmpty() + 1:
             return "Queue is Empty"
         return self.queue.pop(0)
     def peak(self):
@@ -16,7 +16,7 @@ class Queue:
     def isEmpty(self):
         return len(self.queue) == 0
     def isFull(self):
-        return(len(self.queue)) > 4
+        return(len(self.queue)) == 4
     def size(self):
         return len(self.queue)
     
