@@ -1,5 +1,5 @@
 import math
-def Calcfunc()
+def Calcfunc(): 
     #Arithmatic
     def add(a, b):
         return a + b
