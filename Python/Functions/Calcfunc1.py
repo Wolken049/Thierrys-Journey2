@@ -14,10 +14,10 @@ def Calcfunc():
         return a / b
 
     #Constants
-    def pi(self):
+    def pi():
         return math.pi
 
-    def euler(self):
+    def euler():
         return math.e
 
     #Functions
