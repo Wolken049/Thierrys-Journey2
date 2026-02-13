@@ -1,21 +1,11 @@
 from tkinter import *
 import tkinter as tk
-from Calcfunc.Addition import addition
-from Calcfunc.Subtraction import subtraction
-from Calcfunc.Multiplication import multiplication
-from Calcfunc.Division import division
-from Calcfunc.Percentage import percent
-from Calcfunc.Indicies import Indicies
-from Calcfunc.Root import root
-from Calcfunc.Square import square
-from Calcfunc.SqrRoot import sqrroot
-from Calcfunc.Euler import euler
-from Calcfunc.Pi import pi
-from Calcfunc.Calc_Tree import Calculator_Tree
-
-
+from Calc_Tree import Calculator_Tree
+import Calcfunc as Calc
 
 def Basic_calculator():
+    global Calc
+    
     application = Tk()
     application.geometry("400x700")
     application.title("Base_Calculator")
@@ -72,7 +62,7 @@ def Basic_calculator():
         if p == '%':
             current = target.get()
             if current != '':
-                res = percent(float(current)) #I GOT IT YAAAAAAAAAYAYYYYYYYYYYYYY
+                res = Calc.percent(float(current)) #I GOT IT YAAAAAAAAAYAYYYYYYYYYYYYY
                 target.delete(0, END)
                 target.insert(0, res)
             return
@@ -89,13 +79,13 @@ def Basic_calculator():
             a = float(entry_a.get())
             b = float(entry_b.get())
             if current_operator == '+':
-                res = addition(a, b)
+                res = Calc.add(a, b)
             elif current_operator == '-':
-                res = subtraction(a, b)
+                res = Calc.sub(a, b)
             elif current_operator == '*':
-                res = multiplication(a, b)
+                res = Calc.multi(a, b)
             elif current_operator == '/':
-                res = division(a, b)
+                res = Calc.div(a, b)
             else:
                 result_label.config(text='no op')
                 return
@@ -157,6 +147,8 @@ def Basic_calculator():
     application.mainloop()
     
 def Scientific_calculator():
+    global Calc
+    
     application = Tk()
     application.geometry("400x700")
     application.title("Science_Calculator")
@@ -214,7 +206,7 @@ def Scientific_calculator():
         if p == '%':
             current = target.get()
             if current != '':
-                res = percent(float(current)) #I GOT IT YAAAAAAAAAYAYYYYYYYYYYYYY
+                res = Calc.percent(float(current)) #I GOT IT YAAAAAAAAAYAYYYYYYYYYYYYY
                 target.delete(0, END)
                 target.insert(0, res)
             return
@@ -229,17 +221,18 @@ def Scientific_calculator():
         
     def do_equal():
         nonlocal Last_ans
+        global Calc
         try:
             a = float(entry_a.get())
             b = float(entry_b.get())
             if current_operator == '+':
-                res = addition(a, b)
+                res = Calc.add(a, b)
             elif current_operator == '-':
-                res = subtraction(a, b)
+                res = Calc.sub(a, b)
             elif current_operator == '*':
-                res = multiplication(a, b)
+                res = Calc.multi(a, b)
             elif current_operator == '/':
-                res = division(a, b)
+                res = Calc.div(a, b)
             else:
                 result_label.config(text='no op')
                 return
