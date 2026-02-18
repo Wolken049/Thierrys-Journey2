@@ -12,7 +12,7 @@ def Scientific_calculator():
     application.config(bg="black")
 
     button_frame = Frame(application, bg="#000033")
-    button_frame.pack(fill = 'both', expand =True, padx=10, pady=10,)
+    button_frame.pack(fill = 'both', expand =True)
 
     entry_font = ("Segoe UI", 50)
     
@@ -36,8 +36,9 @@ def Scientific_calculator():
     Last_ans = None
 
     display = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000066")
-    display.pack(fill="both", padx = 10, pady = 0, ipady = 0)
-            
+    display.pack(fill="both", padx = 5, pady = 10, ipady = 10)
+    display.place(x = 0, y = 5, width = 400)
+    
     def ans():
         pass
 
@@ -53,6 +54,7 @@ def Scientific_calculator():
         except Exception:
             display.delete(0, END)
             display.insert(0, "Error")
+    
 
     C = Button(button_frame, text='C', padx=20, pady=20, command=empty, fg="#00aa00", bg="#ffff00")
     Percent = Button(button_frame, text='%', padx=20, pady=20, command=lambda: Percent_operator('%'), fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
@@ -69,7 +71,7 @@ def Scientific_calculator():
     ValuePi = Button(button_frame, text = 'π', padx= 20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueEu = Button(button_frame, text = "eˣ", padx=20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueAns = Button(button_frame, text = "ans", padx=18, pady=18, command=ans, fg="#ffffff", bg="#00aa00")
-    Sin = Button(button_frame, text="sin", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
+    Sin = Button(button_frame, text="sin", command = lambda: click('sin') ,padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Cos = Button(button_frame, text="cos", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Tan = Button(button_frame, text="tan", padx=23, pady=20, fg="#aaaaaa", bg="#666666")
     Addition = Button(button_frame, text="+", padx=20, pady=20, command=lambda: click('+'), fg="#cccccc", bg="#00aa00")
@@ -78,7 +80,7 @@ def Scientific_calculator():
     Division = Button(button_frame, text="/", padx=20, pady=20, command=lambda: click('/'), fg="#cccccc", bg="#00aa00")
     Equal = Button(button_frame, text="=", padx=18, pady=18, command=do_equal, fg="#ffffff", bg="#006600")
     Decimal = Button(button_frame, text=".", padx=20, pady=18, command=lambda: click('.'), fg="#ffffff", bg="#0066aa")
-    Negative = Button(button_frame, text="+/-", padx=15, pady=17, command=lambda: toggle_negative('-'), fg="#ffffff", bg="#0066aa")
+    Negative = Button(button_frame, text="+/-", padx=15, pady=17, fg="#ffffff", bg="#0066aa")
     Square = Button(button_frame, text = "x²", padx=19, pady=19, fg="#ffffff", bg="#0000ff")
     Power = Button(button_frame, text = "yˣ", padx=20, pady=20, fg="#00aa00", bg="#ffff00")
     SqrRoot = Button(button_frame, text = '√ ', padx=19, pady=19, fg="#ffffff", bg="#0000ff")

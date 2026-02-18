@@ -146,6 +146,7 @@ def Basic_calculator():
     Negative.place(x = 1, y = 600)
     application.mainloop()
     
+    
 def Scientific_calculator():
     global Calc
     
@@ -155,54 +156,17 @@ def Scientific_calculator():
     application.config(bg="black")
 
     button_frame = Frame(application, bg="#000033")
-    button_frame.pack(fill = 'both', expand =True, padx=10, pady=10,)
+    button_frame.pack(fill = 'both', expand =True)
 
     entry_font = ("Segoe UI", 50)
-    entry_a = Entry(application, font=entry_font, fg="#ccccdd", bg="#333366")
-    entry_b = Entry(application, font=entry_font, fg="#ccccdd", bg="#333366")
-    entry_symbol = Label(application, font=entry_font, fg="#ccccdd", bg="#333366")
-    result_label = Label(application, font=entry_font, text="", fg="#aaaadd", bg="#333399")
-    entry_a.place(x = 5, y = 10, width=163, height=75)
-    entry_b.place(x = 272, y = 10, width=153, height=75)
-    entry_symbol.place(x = 170, y = 10, width=100, height=75)
-    result_label.place(x = 15, y = 100, width=370, height=75)
-
-    input_target = 'a'
-    current_operator = None
-    Last_ans = None
-
-    def set_input_target(t):
-        nonlocal input_target
-        input_target = t
-        entry_a.config(bg="#333366" if t != 'a' else "#555588")# Ich habe eine "Song Cover" gesehen aber ich kann es nicht findet.
-        entry_b.config(bg="#333366" if t != 'b' else "#555588")#Ich werde diese Video pausieren. Ach vergiss es
-
-    def insert_digit(d):
-        target = entry_a if input_target == 'a' else entry_b
-        if d == '.':
-            current = target.get()
-            if '.' in current:
-                return
-            if current == '' or current == '-':
-                target.insert(END, "0.")
-            else:
-                target.insert(END, '.')
-            return         
-        target.insert(END, str(d))
-        
-    def toggle_negative(e):
-        target = entry_a if input_target == 'a' else entry_b
-        if e == '-':
-            current = target.get()
-            if current.startswith('-'):
-                target.delete(0,1)
-            elif current != '':
-                target.insert(0, '-')
-            return
-        target.insert(0, str(e))
+    
+    def click(button_value):
+        current = display.get()
+        display.delete(0, tk.END)
+        display.insert(0, current + str(button_value))
         
     def Percent_operator(p):
-        target = entry_a if input_target == 'a' else entry_b
+        target = "" #do later 
         if p == '%':
             current = target.get()
             if current != '':
@@ -211,87 +175,64 @@ def Scientific_calculator():
                 target.insert(0, res)
             return
         target.insert(text=str(res))
-        
-        
-    def set_operator(op):
-        nonlocal current_operator
-        current_operator = op
-        set_input_target('b')
-        entry_symbol.config(text=op)
-        
-    def do_equal():
-        nonlocal Last_ans
-        global Calc
-        try:
-            a = float(entry_a.get())
-            b = float(entry_b.get())
-            if current_operator == '+':
-                res = Calc.add(a, b)
-            elif current_operator == '-':
-                res = Calc.sub(a, b)
-            elif current_operator == '*':
-                res = Calc.multi(a, b)
-            elif current_operator == '/':
-                res = Calc.div(a, b)
-            else:
-                result_label.config(text='no op')
-                return
-            Last_ans = round(res,3)
-            result_label.config(text=str(round(res, 3)))
-            
-        except Exception:
-            result_label.config(text='error')
-            
+    
+    current_operator = None
+    Last_ans = None
+
+    display = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000066")
+    display.pack(fill="both", padx = 5, pady = 10, ipady = 10)
+    display.place(x = 0, y = 5, width = 400)
+    
     def ans():
-        if Last_ans == None:
-            return
-        target = entry_a if input_target == 'a' else entry_b
-        target.delete(0, END)
-        target.insert(0, str(Last_ans))
+        pass
 
     def empty():
-        entry_a.delete(0, END)
-        entry_b.delete(0, END)
-        entry_symbol.config(text="")
-        result_label.config(text="")
-        set_input_target('a')
-
-    entry_a.bind("<FocusIn>", lambda e: set_input_target('a'))
-    entry_b.bind("<FocusIn>", lambda e: set_input_target('b'))
+        display.delete(0, tk.END)
+        
+    def do_equal():
+        try:
+            expression = display.get()
+            result = eval(expression)
+            display.delete(0, tk.END)
+            display.insert(0, result)
+        except Exception:
+            display.delete(0, END)
+            display.insert(0, "Error")
+    
 
     C = Button(button_frame, text='C', padx=20, pady=20, command=empty, fg="#00aa00", bg="#ffff00")
     Percent = Button(button_frame, text='%', padx=20, pady=20, command=lambda: Percent_operator('%'), fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
-    Value0 = Button(button_frame, text = 0, padx=20, pady=20, command=lambda: insert_digit(0), fg="#000000", bg="#00cccc")
-    Value1 = Button(button_frame, text = 1, padx=20, pady=20, command=lambda: insert_digit(1), fg="#ffffff", bg="#880000")
-    Value2 = Button(button_frame, text = 2, padx=20, pady=20, command=lambda: insert_digit(2), fg="#ffffff", bg="#cc8800")
-    Value3 = Button(button_frame, text = 3, padx=20, pady=20, command=lambda: insert_digit(3), fg="#ffffff", bg="#cccc00")
-    Value4 = Button(button_frame, text = 4, padx=20, pady=20, command=lambda: insert_digit(4), fg="#ffffff", bg="#cccc00")
-    Value5 = Button(button_frame, text = 5, padx=20, pady=20, command=lambda: insert_digit(5), fg="#ffffff", bg="#880000")
-    Value6 = Button(button_frame, text = 6, padx=20, pady=20, command=lambda: insert_digit(6), fg="#ffffff", bg="#cc8800")
-    Value7 = Button(button_frame, text = 7, padx=20, pady=20, command=lambda: insert_digit(7), fg="#ffffff", bg="#cc8800")
-    Value8 = Button(button_frame, text = 8, padx=20, pady=20, command=lambda: insert_digit(8), fg="#ffffff", bg="#cccc00")
-    Value9 = Button(button_frame, text = 9, padx=20, pady=20, command=lambda: insert_digit(9), fg="#ffffff", bg="#880000")
+    Value0 = Button(button_frame, text = 0, padx=20, pady=20, command=lambda: click(0), fg="#000000", bg="#00cccc")
+    Value1 = Button(button_frame, text = 1, padx=20, pady=20, command=lambda: click(1), fg="#ffffff", bg="#880000")
+    Value2 = Button(button_frame, text = 2, padx=20, pady=20, command=lambda: click(2), fg="#ffffff", bg="#cc8800")
+    Value3 = Button(button_frame, text = 3, padx=20, pady=20, command=lambda: click(3), fg="#ffffff", bg="#cccc00")
+    Value4 = Button(button_frame, text = 4, padx=20, pady=20, command=lambda: click(4), fg="#ffffff", bg="#cccc00")
+    Value5 = Button(button_frame, text = 5, padx=20, pady=20, command=lambda: click(5), fg="#ffffff", bg="#880000")
+    Value6 = Button(button_frame, text = 6, padx=20, pady=20, command=lambda: click(6), fg="#ffffff", bg="#cc8800")
+    Value7 = Button(button_frame, text = 7, padx=20, pady=20, command=lambda: click(7), fg="#ffffff", bg="#cc8800")
+    Value8 = Button(button_frame, text = 8, padx=20, pady=20, command=lambda: click(8), fg="#ffffff", bg="#cccc00")
+    Value9 = Button(button_frame, text = 9, padx=20, pady=20, command=lambda: click(9), fg="#ffffff", bg="#880000")
     ValuePi = Button(button_frame, text = 'π', padx= 20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueEu = Button(button_frame, text = "eˣ", padx=20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueAns = Button(button_frame, text = "ans", padx=18, pady=18, command=ans, fg="#ffffff", bg="#00aa00")
-    Sin = Button(button_frame, text="sin", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
+    Sin = Button(button_frame, text="sin", command = lambda: click('sin') ,padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Cos = Button(button_frame, text="cos", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Tan = Button(button_frame, text="tan", padx=23, pady=20, fg="#aaaaaa", bg="#666666")
-    Addition = Button(button_frame, text="+", padx=20, pady=20, command=lambda: set_operator('+'), fg="#cccccc", bg="#00aa00")
-    Subtraction = Button(button_frame, text="-", padx=20, pady=20, command=lambda: set_operator('-'), fg="#cccccc", bg="#00aa00")
-    Multiplication = Button(button_frame, text="*", padx=20, pady=20, command=lambda: set_operator('*'), fg="#cccccc", bg="#00aa00")
-    Division = Button(button_frame, text="/", padx=20, pady=20, command=lambda: set_operator('/'), fg="#cccccc", bg="#00aa00")
+    Addition = Button(button_frame, text="+", padx=20, pady=20, command=lambda: click('+'), fg="#cccccc", bg="#00aa00")
+    Subtraction = Button(button_frame, text="-", padx=20, pady=20, command=lambda: click('-'), fg="#cccccc", bg="#00aa00")
+    Multiplication = Button(button_frame, text="*", padx=20, pady=20, command=lambda: click('*'), fg="#cccccc", bg="#00aa00")
+    Division = Button(button_frame, text="/", padx=20, pady=20, command=lambda: click('/'), fg="#cccccc", bg="#00aa00")
     Equal = Button(button_frame, text="=", padx=18, pady=18, command=do_equal, fg="#ffffff", bg="#006600")
-    Decimal = Button(button_frame, text=".", padx=20, pady=18, command=lambda: insert_digit('.'), fg="#ffffff", bg="#0066aa")
-    Negative = Button(button_frame, text="+/-", padx=15, pady=17, command=lambda: toggle_negative('-'), fg="#ffffff", bg="#0066aa")
+    Decimal = Button(button_frame, text=".", padx=20, pady=18, command=lambda: click('.'), fg="#ffffff", bg="#0066aa")
+    Negative = Button(button_frame, text="+/-", padx=15, pady=17, fg="#ffffff", bg="#0066aa")
     Square = Button(button_frame, text = "x²", padx=19, pady=19, fg="#ffffff", bg="#0000ff")
     Power = Button(button_frame, text = "yˣ", padx=20, pady=20, fg="#00aa00", bg="#ffff00")
     SqrRoot = Button(button_frame, text = '√ ', padx=19, pady=19, fg="#ffffff", bg="#0000ff")
     Left = Button(button_frame, text = "←", padx=20, pady=19, fg="#ffffff", bg="#00bb00")
     Right = Button(button_frame, text = "→", padx=19, pady=18, fg="#ffffff", bg="#00bb00")
     Root = Button(button_frame, text = "ˣ√y", padx=17, pady=19, fg="#00aa00", bg="#ffff00")
-    Brk1 = Button(button_frame, text = "(", padx=21, pady=20, fg ="#ffffff", bg="#00cc00")
-    Brk2 = Button(button_frame, text = ")", padx=23, pady=20, fg="#ffffff", bg="#00cc00")
+    Brk1 = Button(button_frame, text = "(", command = lambda: click('('), padx=21, pady=20, fg ="#ffffff", bg="#00cc00")
+    Brk2 = Button(button_frame, text = ")", command = lambda: click(')'), padx=23, pady=20, fg="#ffffff", bg="#00cc00")
 
     C.place(x = 330, y = 420)
     Percent.place(x = 280, y = 420)
