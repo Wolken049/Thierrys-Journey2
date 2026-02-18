@@ -1,24 +1,49 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
+def print_board(board):
+    print()
+    for i in range(3):
+        print(" | ".join(board[i*3:(i+1)*3]))
+        if i < 2:
+            print("--+---+--")
+    print()
 
-def TraverseandPrint(head):
-    currentNode = head
-    while currentNode:
-        print(currentNode.data, end ="->")
-        currentNode = currentNode.next
-    print("null")
-    
-node1 = Node(7)
-node2 = Node(11)
-node3 = Node(3)
-node4 = Node(2)
-node5 = Node(9)
+def check_winner(board, player):
+    win_patterns = [
+        [0,1,2], [3,4,5], [6,7,8],  # rows
+        [0,3,6], [1,4,7], [2,5,8],  # columns
+        [0,4,8], [2,4,6]            # diagonals
+    ]
+    for pattern in win_patterns:
+        if all(board[i] == player for i in pattern):
+            return True
+    return False
 
-node1.next = node2
-node2.next = node3
-node3.next = node4
-node4.next = node5
+def tic_tac_toe():
+    board = [" " for _ in range(9)]
+    current_player = "X"
 
-TraverseandPrint(node1)
+    while True:
+        print_board(board)
+        try:
+            move = int(input(f"Player {current_player}, choose position (1-9): ")) - 1
+            if move < 0 or move > 8 or board[move] != " ":
+                print("Invalid move. Try again.")
+                continue
+        except ValueError:
+            print("Please enter a number between 1 and 9.")
+            continue
+
+        board[move] = current_player
+
+        if check_winner(board, current_player):
+            print_board(board)
+            print(f"🎉 Player {current_player} wins!")
+            break
+
+        if " " not in board:
+            print_board(board)
+            print("It's a draw!")
+            break
+
+        current_player = "O" if current_player == "X" else "X"
+
+tic_tac_toe()
