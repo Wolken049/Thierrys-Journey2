@@ -149,7 +149,7 @@ def Basic_calculator():
 def Scientific_calculator():
     global Calc
     
-    application = Tk()
+    application = tk.Tk()
     application.geometry("400x700")
     application.title("Science_Calculator")
     application.config(bg="black")
@@ -295,7 +295,7 @@ def Scientific_calculator():
 
     C.place(x = 330, y = 420)
     Percent.place(x = 280, y = 420)
-    Value0.place(x = 115, y = 610)
+    Value0.place(x = 170, y = 610)
     Value1.place(x = 115, y = 550)
     Value2.place(x = 170, y = 550)
     Value3.place(x = 225, y = 550)
@@ -319,7 +319,7 @@ def Scientific_calculator():
     Division.place(x = 330, y = 550)
     Equal.place(x = 330, y = 610)
     Decimal.place(x = 227, y = 615)
-    Negative.place(x = 170, y = 615)
+    Negative.place(x = 115, y = 615)
     Square.place(x = 60, y = 485)
     Power.place(x = 60, y = 550)
     SqrRoot.place(x = 1, y = 485)

@@ -1,49 +1,30 @@
-def print_board(board):
-    print()
-    for i in range(3):
-        print(" | ".join(board[i*3:(i+1)*3]))
-        if i < 2:
-            print("--+---+--")
-    print()
+import math
 
-def check_winner(board, player):
-    win_patterns = [
-        [0,1,2], [3,4,5], [6,7,8],  # rows
-        [0,3,6], [1,4,7], [2,5,8],  # columns
-        [0,4,8], [2,4,6]            # diagonals
-    ]
-    for pattern in win_patterns:
-        if all(board[i] == player for i in pattern):
-            return True
-    return False
-
-def tic_tac_toe():
-    board = [" " for _ in range(9)]
-    current_player = "X"
+def casio_calculator():
+    print("=== CASIO PYTHON CALCULATOR ===")
+    print("Type 'exit' to quit")
+    print("Available operations:")
+    print("+  -  *  /  %  sqrt  sin  cos  tan  log")
 
     while True:
-        print_board(board)
+        user_input = input("\nEnter calculation: ")
+
+        if user_input.lower() == "exit":
+            print("Calculator OFF")
+            break
+
         try:
-            move = int(input(f"Player {current_player}, choose position (1-9): ")) - 1
-            if move < 0 or move > 8 or board[move] != " ":
-                print("Invalid move. Try again.")
-                continue
-        except ValueError:
-            print("Please enter a number between 1 and 9.")
-            continue
+            # Replace math functions
+            user_input = user_input.replace("sqrt", "math.sqrt")
+            user_input = user_input.replace("sin", "math.sin")
+            user_input = user_input.replace("cos", "math.cos")
+            user_input = user_input.replace("tan", "math.tan")
+            user_input = user_input.replace("log", "math.log10")
 
-        board[move] = current_player
+            result = eval(user_input)
+            print("Result:", result)
 
-        if check_winner(board, current_player):
-            print_board(board)
-            print(f"🎉 Player {current_player} wins!")
-            break
+        except Exception as e:
+            print("Error: Invalid Input")
 
-        if " " not in board:
-            print_board(board)
-            print("It's a draw!")
-            break
-
-        current_player = "O" if current_player == "X" else "X"
-
-tic_tac_toe()
+casio_calculator()
