@@ -215,7 +215,7 @@ def Scientific_calculator():
     ValuePi = Button(button_frame, text = 'π', padx= 20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueEu = Button(button_frame, text = "eˣ", padx=20, pady=20, fg="#ffffff", bg="#aa0000")
     ValueAns = Button(button_frame, text = "ans", padx=18, pady=18, command=ans, fg="#ffffff", bg="#00aa00")
-    Sin = Button(button_frame, text="sin", command = lambda: click('sin') ,padx=25, pady=20, fg="#aaaaaa", bg="#666666")
+    Sin = Button(button_frame, text="sin", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Cos = Button(button_frame, text="cos", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Tan = Button(button_frame, text="tan", padx=23, pady=20, fg="#aaaaaa", bg="#666666")
     Addition = Button(button_frame, text="+", padx=20, pady=20, command=lambda: click('+'), fg="#cccccc", bg="#00aa00")
