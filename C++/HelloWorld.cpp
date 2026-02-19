@@ -1,4 +1,4 @@
-#include "C:\Users\Wolke\Desktop\Thierrys-Journey2\C++\HelloWorld.cpp"
+#include <iostream>
 using namespace std;
 
 int main() {
