@@ -1,30 +1,18 @@
-import math
+InputString = "x=0 ; y=1; x=x ; y++;"
 
-def casio_calculator():
-    print("=== CASIO PYTHON CALCULATOR ===")
-    print("Type 'exit' to quit")
-    print("Available operations:")
-    print("+  -  *  /  %  sqrt  sin  cos  tan  log")
+def Splitdata(InputString):
+    Result = []
+    Currentline = ""
+    
+    for Character in InputString:
+        if Character == ";":
+            Result.append(Currentline)
+            Currentline = ""
+            if Character == " ":
+                Result.pop(Currentline)
+                Currentline = ""
+        else:
+            Currentline = Currentline + Character
+    return Result
 
-    while True:
-        user_input = input("\nEnter calculation: ")
-
-        if user_input.lower() == "exit":
-            print("Calculator OFF")
-            break
-
-        try:
-            # Replace math functions
-            user_input = user_input.replace("sqrt", "math.sqrt")
-            user_input = user_input.replace("sin", "math.sin")
-            user_input = user_input.replace("cos", "math.cos")
-            user_input = user_input.replace("tan", "math.tan")
-            user_input = user_input.replace("log", "math.log10")
-
-            result = eval(user_input)
-            print("Result:", result)
-
-        except Exception as e:
-            print("Error: Invalid Input")
-
-casio_calculator()
+print(Splitdata(InputString))

@@ -26,6 +26,12 @@ def factorial(a):
         return 1
     else:
         return a * factorial(a - 1)
+
+def Febonacci(a):
+    if a == 0 or a == 1:
+        return 1
+    else:
+        return Febonacci(a-1) + Febonacci(a-2)
     
 def percent(a):
     return a/100
@@ -82,4 +88,6 @@ def invdegcosine(a):
 
 def invdegtangent(a):
     return math.degrees(math.atan(a))
+
+print(Febonacci(5))
 
