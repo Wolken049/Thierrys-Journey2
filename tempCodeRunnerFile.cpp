@@ -1,12 +1,15 @@
 #include <iostream>
+#include <string> // Required for std::string
 using namespace std;
 
 int main() {
-    int Numb[5] = {10, 20, 30, 40, 50};
-    cout << Numb[0] << ", ";
-    cout << Numb[1] << ", ";
-    cout << Numb[2] << ", ";
-    cout << Numb[3] << ", ";
-    cout << Numb[4];
+    std::string txt = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    // Using .length()
+    std::cout << "The length of the string is: " << [txt.length()](https://www.w3schools.com/cpp/cpp_strings_length.asp) << std::endl;
+    
+    // Using .size() (alias for length())
+    std::cout << "The size of the string is: " << [txt.size()](https://www.w3schools.com/cpp/cpp_strings_length.asp) << std::endl;
+    
     return 0;
 }

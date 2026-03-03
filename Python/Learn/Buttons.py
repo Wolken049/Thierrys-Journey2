@@ -17,7 +17,7 @@ def myClick2():
     Label2.pack()    
 
 Test1 = Button(buttom_frame, text="Test1", command=myClick1 ,padx=60, pady=20, fg = "#333366", bg = "#ccccff")
-Test2 = Button(buttom_frame, text="Test2", command=myClick2 ,padx=60, pady=20, fg = "   #333366", bg = "#ccccff")
+Test2 = Button(buttom_frame, text="Test2", command=myClick2 ,padx=60, pady=20, fg = "#333366", bg = "#ccccff")
 
 
 

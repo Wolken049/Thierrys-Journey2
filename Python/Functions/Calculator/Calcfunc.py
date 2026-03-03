@@ -89,5 +89,3 @@ def invdegcosine(a):
 def invdegtangent(a):
     return math.degrees(math.atan(a))
 
-print(Febonacci(5))
-

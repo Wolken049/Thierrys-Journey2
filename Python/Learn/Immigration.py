@@ -66,6 +66,6 @@ Jack = Immigrants("Jack", "Spelamann", "US04765", "United States of America", da
 Jamal = Illegal("Jamal", "Owoko", "NG0034", "Nigeria", "N/A", datetime.date(2026, 3, 5), "N/A", "Dresden")
 
 print(Jack.CofO)
-print(Jamal.DoArr)
+print(Jamal.FName)
 
 
