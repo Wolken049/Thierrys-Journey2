@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 from Calc_Tree import Calculator_Tree
 import Calcfunc as Calc
+import re
 
 def Basic_calculator():
     global Calc
@@ -158,12 +159,12 @@ def Scientific_calculator():
     button_frame = Frame(application, bg="#000033")
     button_frame.pack(fill = 'both', expand =True)
 
-    entry_font = ("Segoe UI", 50)
+    entry_font = ("Segoe UI", 30)
     
     def click(button_value):
-        current = display.get()
-        display.delete(0, tk.END)
-        display.insert(0, current + str(button_value))
+        current = display1.get()
+        display1.delete(0, tk.END)
+        display1.insert(0, current + str(button_value))
         
     def Percent_operator(p):
         target = "" #do later 
@@ -179,28 +180,47 @@ def Scientific_calculator():
     current_operator = None
     Last_ans = None
 
-    display = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000066")
-    display.pack(fill="both", padx = 5, pady = 10, ipady = 10)
-    display.place(x = 0, y = 5, width = 400)
+    display1 = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000066")
+    display1.pack(fill="both", padx = 5, pady = 5, ipady = 5)
+    display1.place(x = 0, y = 5, width = 400, height = 40)
+    
+    display2 = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000066")
+    display2.pack(fill="both", padx = 5, pady = 5, ipady = 5)
+    display2.place(x = 0, y = 45, width = 400, height = 40)
     
     def ans():
         pass
 
-    def empty():
-        display.delete(0, tk.END)
+    def emptytop():
+        display1.delete(0, tk.END)
         
+    def emptyall():
+        display1.delete(0, tk.END)
+        display2.delete(0, tk.END)
+    
+    def delete():
+        current = display1.get()
+        display1.delete(0, END)
+        display1.insert(0, current[:-1])
+            
     def do_equal():
         try:
-            expression = display.get()
+            expression = display1.get()
+            expression = re.sub(r'(\d)(π)', r'\1*\2', expression)
+            expression = re.sub(r'(e)(\()', r'\1*\2', expression)
+            expression = expression.replace("π", str(Calc.pi()))
+            expression = expression.replace("e", str(Calc.euler()))
             result = eval(expression)
-            display.delete(0, tk.END)
-            display.insert(0, result)
+            display2.delete(0, tk.END)
+            display2.insert(0, result)
         except Exception:
-            display.delete(0, END)
-            display.insert(0, "Error")
+            display2.delete(0, END)
+            display2.insert(0, "Error")
     
 
-    C = Button(button_frame, text='C', padx=20, pady=20, command=empty, fg="#00aa00", bg="#ffff00")
+    Clear = Button(button_frame, text='C', padx=20, pady=20, command=emptytop, fg="#00aa00", bg="#ffff00")
+    ac = Button(button_frame, text='AC', padx=20, pady=20, command=emptyall, fg="#00aa00", bg="#ffff00")
+    Delete = Button(button_frame, text="Del", padx=20, pady=20, command=delete, fg="#00aa00", bg="#ffff00")
     Percent = Button(button_frame, text='%', padx=20, pady=20, command=lambda: Percent_operator('%'), fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
     Value0 = Button(button_frame, text = 0, padx=20, pady=20, command=lambda: click(0), fg="#000000", bg="#00cccc")
     Value1 = Button(button_frame, text = 1, padx=20, pady=20, command=lambda: click(1), fg="#ffffff", bg="#880000")
@@ -212,12 +232,21 @@ def Scientific_calculator():
     Value7 = Button(button_frame, text = 7, padx=20, pady=20, command=lambda: click(7), fg="#ffffff", bg="#cc8800")
     Value8 = Button(button_frame, text = 8, padx=20, pady=20, command=lambda: click(8), fg="#ffffff", bg="#cccc00")
     Value9 = Button(button_frame, text = 9, padx=20, pady=20, command=lambda: click(9), fg="#ffffff", bg="#880000")
-    ValuePi = Button(button_frame, text = 'π', padx= 20, pady=20, fg="#ffffff", bg="#aa0000")
-    ValueEu = Button(button_frame, text = "eˣ", padx=20, pady=20, fg="#ffffff", bg="#aa0000")
+    ValuePi = Button(button_frame, text = 'π', padx= 20, pady=20, command=lambda: click("π"), fg="#ffffff", bg="#aa0000")
+    ValueEu = Button(button_frame, text = "eˣ", padx=20, pady=20, command=lambda: click("e"), fg="#ffffff", bg="#aa0000")
     ValueAns = Button(button_frame, text = "ans", padx=18, pady=18, command=ans, fg="#ffffff", bg="#00aa00")
     Sin = Button(button_frame, text="sin", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Cos = Button(button_frame, text="cos", padx=25, pady=20, fg="#aaaaaa", bg="#666666")
     Tan = Button(button_frame, text="tan", padx=23, pady=20, fg="#aaaaaa", bg="#666666")
+    A = Button(button_frame, text = 'A', padx=20, pady=20, command=lambda: click(A), fg="#ff8800", bg="#ffffff")
+    B = Button(button_frame, text = 'B', padx=20, pady=20, command=lambda: click(B), fg="#ff8800", bg="#ffffff")
+    C = Button(button_frame, text = 'C', padx=20, pady=20, command=lambda: click(C), fg="#ff8800", bg="#ffffff")
+    D = Button(button_frame, text = 'D', padx=20, pady=20, command=lambda: click(D), fg="#ff8800", bg="#ffffff")
+    E = Button(button_frame, text = 'E', padx=20, pady=20, command=lambda: click(E), fg="#ff8800", bg="#ffffff")
+    F = Button(button_frame, text = 'F', padx=20, pady=20, command=lambda: click(F), fg="#ff8800", bg="#ffffff")
+    X = Button(button_frame, text = 'X', padx=20, pady=20, command=lambda: click(X), fg="#ff8800", bg="#ffffff")
+    Y = Button(button_frame, text = 'Y', padx=20, pady=20, command=lambda: click(Y), fg="#ff8800", bg="#ffffff")
+    M = Button(button_frame, text = 'Z', padx=20, pady=20, command=lambda: click(M), fg="#ff8800", bg="#ffffff")
     Addition = Button(button_frame, text="+", padx=20, pady=20, command=lambda: click('+'), fg="#cccccc", bg="#00aa00")
     Subtraction = Button(button_frame, text="-", padx=20, pady=20, command=lambda: click('-'), fg="#cccccc", bg="#00aa00")
     Multiplication = Button(button_frame, text="*", padx=20, pady=20, command=lambda: click('*'), fg="#cccccc", bg="#00aa00")
@@ -234,8 +263,10 @@ def Scientific_calculator():
     Brk1 = Button(button_frame, text = "(", command = lambda: click('('), padx=21, pady=20, fg ="#ffffff", bg="#00cc00")
     Brk2 = Button(button_frame, text = ")", command = lambda: click(')'), padx=23, pady=20, fg="#ffffff", bg="#00cc00")
 
-    C.place(x = 330, y = 420)
-    Percent.place(x = 280, y = 420)
+    Clear.place(x = 330, y = 420)
+    ac.place(x = 280, y = 420)
+    Delete.place(x = 330, y = 330)
+    Percent.place(x = 330, y = 355)
     Value0.place(x = 170, y = 610)
     Value1.place(x = 115, y = 550)
     Value2.place(x = 170, y = 550)
