@@ -9,20 +9,23 @@ h1 {
     0% {
         color: #ff0000;
     }
-    20% {
+    16% {
         color: #ffff00;
     }
-    40% {
+    48% {
         color: #00ff00;
     }
-    60% {
+    64% {
         color: #00ffff;
     }
     80% {
         color: #0000ff;
     }
-    100% {
+    96% {
         color: #ff00ff;
+    }
+    100% {
+        color: #ff0000;
     }
 }
 

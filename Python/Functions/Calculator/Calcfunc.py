@@ -32,60 +32,73 @@ def Febonacci(a):
         return 1
     else:
         return Febonacci(a-1) + Febonacci(a-2)
+def log(a):
+    return math.log(a)
+
+def ln(a):
+    return (log(a) / log(euler()))
     
 def percent(a):
     return a/100
     
 #Indicies    
+def Inverse(a):
+    return a ** -1
+
 def Square(a):
-    return a ^ 2
+    return a ** 2
 
 def Cube(a):
-    return a ^ 3
+    return a ** 3
 
 def SqrRoot(a):
-    return a ^ (1/2)
+    return a ** (1/2)
 
 def CubeRoot(a):
-    return a ^ (1/3)
+    return a ** (1/3)
 
 def indicies(a, b):
-    return a ^ b
+    return a ** b
 
 #Trigonometry
-def radsine(a):
-    return math.sin(a)
+class Trig:
+    class Trig1:
+        @staticmethod
+        def degsine(a):
+            return math.sin(math.radians(a))
+        
+        def degcosine(a):
+            return math.cos(math.radians(a))
 
-def radcosine(a):
-    return math.cos(a)
+        def degtangent(a):
+            return math.tan(math.radians(a))
 
-def radtangent(a):
-    return math.tan(a)
 
-def degsine(a):
-    return math.sin(math.radians(a))
+        def invdegsine(a):
+            return math.degrees(math.asin(a))
 
-def degcosine(a):
-    return math.cos(math.radians(a))
+        def invdegcosine(a):
+            return math.degrees(math.acos(a))
 
-def degtangent(a):
-    return math.tan(math.radians(a))
+        def invdegtangent(a):
+            return math.degrees(math.atan(a))
+        
+    class Trig2:
+        @staticmethod
+        def radsine(a):
+            return math.sin(a)
 
-def invradsine(a):
-    return math.asin(a)
+        def radcosine(a):
+            return math.cos(a)
 
-def invradcosine(a):
-    return math.acos(a)
+        def radtangent(a):
+            return math.tan(a)
+        def invradsine(a):
+            return math.asin(a)
 
-def invradtangent(a):
-    return math.atan(a)
+        def invradcosine(a):
+            return math.acos(a)
 
-def invdegsine(a):
-    return math.degrees(math.asin(a))
-
-def invdegcosine(a):
-    return math.degrees(math.acos(a))
-
-def invdegtangent(a):
-    return math.degrees(math.atan(a))
+        def invradtangent(a):
+            return math.atan(a)
 
