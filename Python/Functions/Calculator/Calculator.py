@@ -236,6 +236,7 @@ def Scientific_calculator():
         CmdShift = False
         CmdAlpha = True
         
+        
     def emptytop():
         display1.delete(0, tk.END)
         
@@ -443,20 +444,24 @@ def Scientific_calculator():
                 expression = display1.get()
                 expression = re.sub(r'(\d)(π)', r'\1*\2', expression)
                 expression = re.sub(r'e\(([^)]+)\)', lambda m: f"{(Calc.euler(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'ln\(([^)]+)\)', lambda m: str(Calc.ln(float(m.group(1)))), expression)
-                expression = re.sub(r'log\(([^)]+)\)', lambda m: str(Calc.log(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)!', lambda m: str(Calc.factorial(float(m.group(1)))), expression)
-                expression = re.sub(r'√(\d+\.?\d*)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
-                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: str(Calc.Inverse(float(m.group(1)))), expression)
-                expression = re.sub(r'\(([^)]+)\)²', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)²', lambda m: str(Calc.Square(float(m.group(1)))), expression)
+                expression = re.sub(r'ln\(([^)]+)\)', lambda m: f"{(Calc.ln(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'log\(([^)]+)\)', lambda m: f"{(Calc.log(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'(\d+\.?\d*)!', lambda m: f"{(Calc.factorial(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'√(\d+\.?\d*)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'\(([^)]+)\)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'(\d+\.?\d*)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'\(([^)]+)\)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'(\d+\.?\d*)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10f}", expression)
                 expression = re.sub(r'(\d+\.?\d*)\(', r'\1*(', expression)
-                expression = re.sub(r'\(([^)]+)\)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
+                expression = re.sub(r'\(([^)]+)\)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'(\d+\.?\d*)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10f}", expression)
                 expression = expression.replace("π", str(Calc.pi()))
                 expression = expression.replace("ℯ", str(Calc.empeuler()))
-                expression = re.sub(r'√\(([^)]+)\)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
+                expression = re.sub(r'√\(([^)]+)\)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10f}", expression)
+                expression = expression.replace("ans", str(Last_ans))
+                
                 match Trig_flag:
                     case 1:
                         if not InvTrig:
@@ -464,32 +469,22 @@ def Scientific_calculator():
                             expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Degrees.degcosine(eval(m.group(1)))):.10f}", expression)
                             expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Degrees.degtangent(eval(m.group(1)))):.10f}", expression)
                         else:
-                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: str(Degrees.invdegsine(float(m.group(1)))), expression)
-                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: str(Degrees.invdegcosine(float(m.group(1)))), expression)
+                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegsine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegcosine(eval(m.group(1)))):.10f}", expression)
                             expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegtangent(eval(m.group(1)))):.10f}", expression)
                     case 2:
                         if not InvTrig:
-                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: str(Radians.radsine(float(m.group(1)))), expression)
-                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: str(Radians.radcosine(float(m.group(1)))), expression)
+                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Radians.radsine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Radians.radcosine(eval(m.group(1)))):.10f}", expression)
                             expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Radians.radtangent(eval(m.group(1)))):.10}", expression)
                         else: 
-                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: str(Radians.invradsine(float(m.group(1)))), expression)
-                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: str(Radians.invradcosine(float(m.group(1)))), expression)
+                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradsine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradcosine(eval(m.group(1)))):.10f}", expression)
                             expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradtangent(eval(m.group(1)))):.10}", expression)
                     case 3:
                         pass
                     case 4:
                         pass
-                expression = re.sub(r'(\d+\.?\d*)!', lambda m: str(Calc.factorial(float(m.group(1)))), expression)
-                expression = re.sub(r'√(\d+\.?\d*)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
-                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: str(Calc.Inverse(float(m.group(1)))), expression)
-                expression = re.sub(r'\(([^)]+)\)²', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)²', lambda m: str(Calc.Square(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)\(', r'\1*(', expression)
-                expression = re.sub(r'\(([^)]+)\)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = re.sub(r'(\d+\.?\d*)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
-                expression = expression.replace("ans", str(Last_ans))
                 print(expression)
                 result = eval(expression)#Why does the position of this matter? (Context: I moved this line up and it caused errors)
                 Last_ans = result
@@ -512,7 +507,7 @@ def Scientific_calculator():
     Clear = Button(button_frame, text='C', width=11, height=5, command=emptytop, fg="#00aa00", bg="#ffff00")
     ac = Button(button_frame, text='AC', width=11, height=5, command=emptyall, fg="#ffffff", bg="#99bbaa")
     Delete = Button(button_frame, text="Del", width=11, height=5, command=delete, fg="#ffffff", bg="#aabb99")
-    Percent = Button(button_frame, text='%', width=9, height=3, command=lambda: Percent_operator('%'), fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
+    Percent = Button(button_frame, text='%', width=9, height=3, command=lambda: click('%'), fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
     Value0 = Button(button_frame, text = 0, width=11, height=5, command=lambda: click(0), fg="#000000", bg="#00cccc")
     Value1 = Button(button_frame, text = 1, width=11, height=5, command=lambda: click(1), fg="#ffffff", bg="#880000")
     Value2 = Button(button_frame, text = 2, width=11, height=5, command=lambda: click(2), fg="#ffffff", bg="#cc8800")
