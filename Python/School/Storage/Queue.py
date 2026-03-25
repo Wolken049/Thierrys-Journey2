@@ -6,10 +6,10 @@ class Queue:
             return "Queue is Full"
         self.queue.append(element)
     def dequeue(self):
-        if self.isEmpty() + 1:
+        if self.isEmpty():
             return "Queue is Empty"
         return self.queue.pop(0)
-    def peak(self):
+    def peek(self):
         if self.isEmpty():
             return "Stack is Empty"
         return self.queue[0]
@@ -32,7 +32,7 @@ myQueue.enqueue('F')
 print("Queue: ", myQueue.queue)
 print("Dequeue: ", myQueue.dequeue())
 print("Queue after dequeing: ", myQueue.queue)
-print("Peak: ", myQueue.peak())
+print("Peak: ", myQueue.peek())
 print("isFull: ", myQueue.isFull())
 print("isEmpty: ", myQueue.isEmpty())
 print("Size: ", myQueue.size())

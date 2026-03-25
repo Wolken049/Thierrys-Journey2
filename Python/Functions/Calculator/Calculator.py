@@ -250,7 +250,7 @@ def Scientific_calculator():
         
     def shift():
         nonlocal InvTrig, CmdShift, CmdAlpha
-        CmdAlpha = False
+        CmdAlpha = False #Logic Error: Buttons don't reset when you immediately press Alpha button making shifted buttons stay shifted lest shift is pressed again
         if not InvTrig:
             InvTrig = True
             Sin.config(text="sin⁻¹", command=lambda: click("sin⁻¹("))
@@ -273,7 +273,7 @@ def Scientific_calculator():
         else:
             CmdShift = False        
             Inverse.config(text = "x⁻¹",command=lambda: click('⁻¹'))
-            Valueln.config(text = "ln")
+            Valueln.config(text = "ln", command=lambda:click("ln("))
             Power.config(text = "yˣ")
             display3.delete(0, tk.END)
             
@@ -282,7 +282,7 @@ def Scientific_calculator():
     def alpha():
         nonlocal CmdAlpha, CmdShift, InvTrig
         InvTrig = False
-        CmdShift = False
+        CmdShift = False #Logic Error: Buttons don't reset when you immediately press Shift button making shifted buttons stay shifted lest shift is pressed again
         if not CmdAlpha:
             CmdAlpha = True
             time.config(text="B", command=lambda: click("B"))
@@ -300,7 +300,7 @@ def Scientific_calculator():
             Sin.config(text="sin", command=lambda: click("sin("))
             Cos.config(text="cos", command=lambda: click("cos("))
             Tan.config(text="tan", command=lambda: click("tan("))
-            Valueln.config(text = "ln")
+            Valueln.config(text = "ln", command=lambda: click("ln("))
             display3.delete(0, tk.END)
     def colourchange():
         nonlocal colour
@@ -341,7 +341,7 @@ def Scientific_calculator():
             F.config(fg="#ff8800", bg="#ffffff")
             X.config(fg="#ff8800", bg="#ffffff")
             Y.config(fg="#ff8800", bg="#ffffff")
-            M.config(fg="#ff8800", bg="#ffffff")
+            M.config(fg="#ffffff", bg="#00ddaa")
             Addition.config(fg="#cccccc", bg="#00aa00")
             Subtraction.config(fg="#cccccc", bg="#00aa00")
             Multiplication.config(fg="#cccccc", bg="#00aa00")
@@ -429,58 +429,85 @@ def Scientific_calculator():
         nonlocal option, Trig_option
         option = True
         Trig_option = True
+        display1.delete(0, END)
         display1.insert(0, "Deg (1), Rad (2)")
                       
     def do_equal():
         nonlocal Last_ans, option
+        expression = display1.get()
+        
+        print("RAW:", expression)
+        
         if not option:
             try:
                 expression = display1.get()
                 expression = re.sub(r'(\d)(π)', r'\1*\2', expression)
-                expression = re.sub(r'(e)(\()', r'\1*\2', expression)
+                expression = re.sub(r'e\(([^)]+)\)', lambda m: f"{(Calc.euler(eval(m.group(1)))):.10f}", expression)
                 expression = re.sub(r'ln\(([^)]+)\)', lambda m: str(Calc.ln(float(m.group(1)))), expression)
                 expression = re.sub(r'log\(([^)]+)\)', lambda m: str(Calc.log(float(m.group(1)))), expression)
-                
+                expression = re.sub(r'(\d+\.?\d*)!', lambda m: str(Calc.factorial(float(m.group(1)))), expression)
+                expression = re.sub(r'√(\d+\.?\d*)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
+                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
+                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: str(Calc.Inverse(float(m.group(1)))), expression)
+                expression = re.sub(r'\(([^)]+)\)²', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
+                expression = re.sub(r'(\d+\.?\d*)²', lambda m: str(Calc.Square(float(m.group(1)))), expression)
+                expression = re.sub(r'(\d+\.?\d*)\(', r'\1*(', expression)
+                expression = re.sub(r'\(([^)]+)\)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
+                expression = re.sub(r'(\d+\.?\d*)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
+                expression = expression.replace("π", str(Calc.pi()))
+                expression = expression.replace("ℯ", str(Calc.empeuler()))
+                expression = re.sub(r'√\(([^)]+)\)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
                 match Trig_flag:
                     case 1:
                         if not InvTrig:
-                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: str(Degrees.degsine(float(m.group(1)))), expression)
-                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: str(Degrees.degcosine(float(m.group(1)))), expression)
-                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: str(Degrees.degtangent(float(m.group(1)))), expression)
+                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Degrees.degsine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Degrees.degcosine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Degrees.degtangent(eval(m.group(1)))):.10f}", expression)
                         else:
                             expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: str(Degrees.invdegsine(float(m.group(1)))), expression)
                             expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: str(Degrees.invdegcosine(float(m.group(1)))), expression)
-                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: str(Degrees.invdegtangent(float(m.group(1)))), expression)
+                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegtangent(eval(m.group(1)))):.10f}", expression)
                     case 2:
                         if not InvTrig:
                             expression = re.sub(r'sin\(([^)]+)\)', lambda m: str(Radians.radsine(float(m.group(1)))), expression)
                             expression = re.sub(r'cos\(([^)]+)\)', lambda m: str(Radians.radcosine(float(m.group(1)))), expression)
-                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: str(Radians.radtangent(float(m.group(1)))), expression)
+                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Radians.radtangent(eval(m.group(1)))):.10}", expression)
                         else: 
                             expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: str(Radians.invradsine(float(m.group(1)))), expression)
                             expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: str(Radians.invradcosine(float(m.group(1)))), expression)
-                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: str(Radians.invradtangent(float(m.group(1)))), expression)
+                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradtangent(eval(m.group(1)))):.10}", expression)
                     case 3:
                         pass
-                expression = re.sub(r'√\(([^)]+)\)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
+                    case 4:
+                        pass
                 expression = re.sub(r'(\d+\.?\d*)!', lambda m: str(Calc.factorial(float(m.group(1)))), expression)
                 expression = re.sub(r'√(\d+\.?\d*)', lambda m: str(Calc.SqrRoot(float(m.group(1)))), expression)
+                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
                 expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: str(Calc.Inverse(float(m.group(1)))), expression)
+                expression = re.sub(r'\(([^)]+)\)²', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
                 expression = re.sub(r'(\d+\.?\d*)²', lambda m: str(Calc.Square(float(m.group(1)))), expression)
+                expression = re.sub(r'(\d+\.?\d*)\(', r'\1*(', expression)
+                expression = re.sub(r'\(([^)]+)\)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
                 expression = re.sub(r'(\d+\.?\d*)³', lambda m: str(Calc.Cube(float(m.group(1)))), expression)
                 expression = expression.replace("ans", str(Last_ans))
-                expression = expression.replace("π", str(Calc.pi()))
-                expression = expression.replace("e", str(Calc.euler()))
-                expression = expression.replace("ℯ", str(Calc.euler()))
-                result = eval(expression)
                 print(expression)
+                result = eval(expression)#Why does the position of this matter? (Context: I moved this line up and it caused errors)
                 Last_ans = result
                 fresult = round(result, 9)
                 display2.delete(0, tk.END)
                 display2.insert(0, fresult)
-            except Exception:
-                display2.delete(0, END)
-                display2.insert(0, "Error")
+            except Exception as e:
+                print("Error: ", e)
+                match e:
+                    case ZeroDivisionError():
+                        display2.delete(0, END)
+                        display2.insert(0, "Math ERROR") #Wenn der Benutzer durch 0 dividiert, zeigt die Funktion "Math Error" zurück an
+                    case ValueError():
+                        display2.delete(0, END)
+                        display2.insert(0, "Math ERROR")#Wenn der Benutzer 
+                    case _:
+                        display2.delete(0, END)
+                        display2.insert(0, "Syntax ERROR")# Wenn der Benutzer eine Unvollständige oder ungültige Gleichung eingibt, zeigt die Funktion "Syntax Error" an  
 
     Clear = Button(button_frame, text='C', width=11, height=5, command=emptytop, fg="#00aa00", bg="#ffff00")
     ac = Button(button_frame, text='AC', width=11, height=5, command=emptyall, fg="#ffffff", bg="#99bbaa")
@@ -498,7 +525,7 @@ def Scientific_calculator():
     Value9 = Button(button_frame, text = 9, width=11, height=5, command=lambda: click(9), fg="#ffffff", bg="#880000")
     ValuePi = Button(button_frame, text = 'π', width=9, height=3, command=lambda: click("π"), fg="#ffffff", bg="#aa0000")
     Valueln = Button(button_frame, text = "ln", command=lambda: click("ln"),width=9, height=3, fg="#ffffff", bg="#0066aa")
-    ValueAns = Button(button_frame, text = "ans", width=11, height=5, command=lambda: click("ans"), fg="#ffffff", bg="#00aa00")
+    ValueAns = Button(button_frame, text = "ans", width=11, height=5, command=lambda: click("ans"), fg="#ffffff", bg="#006600")
     Sin = Button(button_frame, text="sin", width=9, height=3, command=lambda: click("sin"), fg="#ffffff", bg="#aa0066")
     Cos = Button(button_frame, text="cos", width=9, height=3, command=lambda: click("cos"), fg="#ffffff", bg="#aa0066")
     Tan = Button(button_frame, text="tan", width=9, height=3, command=lambda: click("tan"), fg="#ffffff", bg="#aa0066")
@@ -536,15 +563,17 @@ def Scientific_calculator():
     Trigo = Button(button_frame, text="Trig", width=9, height=1, command=Trig, fg="#ffffff", bg="#0099aa")
     Color = Button(button_frame, text="Colour", command=colourchange,width=9, height=1, fg="#ffffff", bg="#0099aa")
     sto = Button(button_frame, text="sto", width=9, height=3, command=storage, fg="#ffffff", bg="#0033aa")
+    M = Button(button_frame, text="M",width=9, height=3, fg="#ffffff", bg="#00ddaa")
+    
         
     Shift.place(x = 0, y = 136)
     Alpha.place(x = 0, y = 163)
-    Trigo.place(x = 305, y = 136)
-    Color.place(x = 305, y = 163)
+    Trigo.place(x = 300, y = 136)
+    Color.place(x = 300, y = 163)
     #Clear.place(x = 360, y = 360)
     ac.place(x = 360, y = 360)
     Delete.place(x = 270, y = 360)
-    Percent.place(x = 304, y = 304)
+    Percent.place(x = 75, y = 304)
     Value0.place(x = 90, y = 615)
     Value1.place(x = 0, y = 530)
     Value2.place(x = 90, y = 530)
@@ -555,17 +584,18 @@ def Scientific_calculator():
     Value7.place(x = 0, y = 360)
     Value8.place(x = 90, y = 360)
     Value9.place(x = 180, y = 360)
-    ValuePi.place(x = 380, y = 304)
+    ValuePi.place(x = 300, y = 304)
     ValueAns.place(x = 270, y = 615)
-    Valueln.place(x = 380, y = 192)
-    Sin.place(x = 230, y = 248)
-    Cos.place(x = 305, y = 248)
-    Tan.place(x = 380, y = 248)
-    Hyp.place(x = 155, y = 248)
-    time.place(x = 80, y = 248)
-    sto.place(x = 80, y = 304)
-    Brk1.place(x = 155, y = 304)
-    Brk2.place(x = 230, y = 304)
+    Valueln.place(x = 375, y = 192)
+    Sin.place(x = 225, y = 248)
+    Cos.place(x = 300, y = 248)
+    Tan.place(x = 375, y = 248)
+    Hyp.place(x = 150, y = 248)
+    time.place(x = 75, y = 248)
+    sto.place(x = 0, y = 304)
+    M.place (x = 375, y= 304)
+    Brk1.place(x = 150, y = 304)
+    Brk2.place(x = 225, y = 304)
     Addition.place(x = 270, y = 530)
     Subtraction.place(x = 360, y = 530)
     Multiplication.place(x = 270, y = 445)
@@ -573,12 +603,12 @@ def Scientific_calculator():
     Equal.place(x = 360, y = 615)
     Decimal.place(x = 180, y = 615)
     Negative.place(x = 0, y = 615)
-    Inverse.place(x = 80, y= 136)
-    Square.place(x = 155, y = 192)
-    Power.place(x = 230, y = 192)
-    Cube.place(x = 380, y = 136)
-    log.place(x = 305, y = 192)
-    SqrRoot.place(x = 80, y = 192)
+    Inverse.place(x = 75, y= 136)
+    Square.place(x = 150, y = 192)
+    Power.place(x = 225, y = 192)
+    Cube.place(x = 375, y = 136)
+    log.place(x = 300, y = 192)
+    SqrRoot.place(x = 75, y = 192)
     #Root.place(x = 1, y = 580)
     Left.place(x = 180, y = 150)
     Right.place(x = 244, y = 150)

@@ -17,7 +17,12 @@ def div(a, b):
 def pi():
     return math.pi
 
-def euler():
+def euler(a):
+    print(a)
+    print(math.e ** a)
+    return math.e ** a
+
+def empeuler():
     return math.e
 
 #Functions
