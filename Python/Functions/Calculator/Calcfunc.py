@@ -98,6 +98,7 @@ class Trig:
 
         def radtangent(a):
             return math.tan(a)
+        
         def invradsine(a):
             return math.asin(a)
 
@@ -106,4 +107,36 @@ class Trig:
 
         def invradtangent(a):
             return math.atan(a)
-
+    class Trig3:
+        pass
+    class Trig4:
+        @staticmethod
+        def SinHyp(a):
+            return math.sinh(a)
+        def CosHyp(a):
+            return math.cosh(a)
+        def TanHyp(a):
+            return math.tanh(a)
+        
+        def invSinHyp(a):
+            return math.asinh(a)
+        def invCosHyp(a):
+            return math.acosh(a)
+        def invTanHyp(a):
+            return math.atanh(a)
+    
+    class Trig5:
+        @staticmethod
+        def cossec(a):
+            return 1 / math.sin(a)
+        def sec(a):
+            return 1 / math.cos(a)
+        def cotangent(a):
+            return 1 / math.tan(a)
+        
+        def invcosec(a):
+            return 1 / math.asin(a)
+        def invsec(a):
+            return 1 / math.acos(a)
+        def invcotangent(a):
+            return 1 / math.atan(a)

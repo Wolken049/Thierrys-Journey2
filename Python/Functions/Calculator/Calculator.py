@@ -152,6 +152,9 @@ def Scientific_calculator():
     global Calc
     Degrees = Calc.Trig.Trig1
     Radians = Calc.Trig.Trig2
+    Gradians = Calc.Trig.Trig3
+    Hyperbolic = Calc.Trig.Trig4
+    Extra = Calc.Trig.Trig5
     
     application = tk.Tk()
     application.geometry("450x700")
@@ -161,6 +164,7 @@ def Scientific_calculator():
     button_frame.pack(fill = 'both', expand =True)
     
     colour = True
+    store = False
         
     entry_font = ("Segoe UI", 30)
     
@@ -173,30 +177,26 @@ def Scientific_calculator():
         else:
             display1.delete(0, tk.END)
             if Trig_option:
-                if button_value == 1:
-                    Trig_flag = 1
-                    display1.delete(0, tk.END)
-                    option = False
-                elif button_value == 2:
-                    Trig_flag = 2
-                    display1.delete(0, END)
-                    option = False
-                elif button_value == 3:
-                    Trig_flag = 3
-                    display1.delete(0, END)
-                    option = False
-            
-        
-    def Percent_operator(p):
-        target = "" #do later 
-        if p == '%':
-            current = target.get()
-            if current != '':
-                res = Calc.percent(float(current)) #I GOT IT YAAAAAAAAAYAYYYYYYYYYYYYY
-                target.delete(0, END)
-                target.insert(0, res)
-            return
-        target.insert(text=str(res))
+                match button_value:
+                    case 1:
+                        Trig_flag = 1
+                        display1.delete(0, tk.END)
+                        option = False
+                    case 2:
+                        Trig_flag = 2
+                        display1.delete(0, END)
+                        option = False
+                    case 3:
+                        display1.delete(0, END)
+                        display1.insert(0, "Not Available. Click 1 to close")
+                        if button_value == 1:
+                            display1.delete(0, END)
+                            option = False
+                    case 4:
+                        Trig_flag = 4
+                        display1.delete(0, END)
+                        option = False
+        default()
     
     current_operator = None
     Last_ans = None
@@ -213,7 +213,7 @@ def Scientific_calculator():
     D = None
     E = None
     F = None
-
+    
     display1 = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000099")
     display1.pack(fill="both", padx = 5, pady = 5, ipady = 5)
     display1.place(x = 0, y = 5, width = 450, height = 60)
@@ -235,6 +235,7 @@ def Scientific_calculator():
         nonlocal Last_ans, CmdAlpha, CmdShift
         CmdShift = False
         CmdAlpha = True
+        store = True
         
         
     def emptytop():
@@ -248,10 +249,23 @@ def Scientific_calculator():
         current = display1.get()
         display1.delete(0, END)
         display1.insert(0, current[:-1])
-        
+    
+    
+    def default():          
+        Inverse.config(text = "x⁻¹",command=lambda: click('⁻¹'))
+        Valueln.config(text = "ln", command=lambda:click("ln("))
+        Power.config(text = "yˣ")
+        Sin.config(text="sin", command=lambda: click("sin("))
+        Cos.config(text="cos", command=lambda: click("cos("))
+        Tan.config(text="tan", command=lambda: click("tan("))
+        time.config(text="°")
+        Hyp.config(text="hyp", command=hyperbolic)
+        display3.delete(0, tk.END)
+            
     def shift():
         nonlocal InvTrig, CmdShift, CmdAlpha
-        CmdAlpha = False #Logic Error: Buttons don't reset when you immediately press Alpha button making shifted buttons stay shifted lest shift is pressed again
+        if  CmdAlpha:
+            default()
         if not InvTrig:
             InvTrig = True
             Sin.config(text="sin⁻¹", command=lambda: click("sin⁻¹("))
@@ -282,8 +296,8 @@ def Scientific_calculator():
 
     def alpha():
         nonlocal CmdAlpha, CmdShift, InvTrig
-        InvTrig = False
-        CmdShift = False #Logic Error: Buttons don't reset when you immediately press Shift button making shifted buttons stay shifted lest shift is pressed again
+        if CmdShift:
+            default()
         if not CmdAlpha:
             CmdAlpha = True
             time.config(text="B", command=lambda: click("B"))
@@ -297,12 +311,32 @@ def Scientific_calculator():
         else:
             CmdAlpha = False
             time.config(text="°")
-            Hyp.config(text="hyp")
+            Hyp.config(text="hyp", command=hyperbolic)
             Sin.config(text="sin", command=lambda: click("sin("))
             Cos.config(text="cos", command=lambda: click("cos("))
             Tan.config(text="tan", command=lambda: click("tan("))
             Valueln.config(text = "ln", command=lambda: click("ln("))
             display3.delete(0, tk.END)
+            
+    def Trig():
+        nonlocal option, Trig_option
+        option = True
+        Trig_option = True
+        display1.delete(0, END)
+        display1.insert(0, "Deg (1), Rad (2), GRad(3), Extra(4)")
+    
+    def hyperbolic():
+        nonlocal option, Trig_flag, InvTrig
+        Trig_flag = 4
+        if not InvTrig:
+            Sin.config(text="sin", command=lambda: click("sinh("))
+            Cos.config(text="cos", command=lambda: click("cosh("))
+            Tan.config(text="tan", command=lambda: click("tanh("))
+        else:
+            Sin.config(text="sin⁻¹", command=lambda: click("sinh⁻¹("))
+            Cos.config(text="cos⁻¹", command=lambda: click("cosh⁻¹("))
+            Tan.config(text="tan⁻¹", command=lambda: click("tanh⁻¹("))
+        
     def colourchange():
         nonlocal colour
         if not colour:
@@ -314,7 +348,7 @@ def Scientific_calculator():
             Clear.config(fg = "#ffffff", bg="#000000")
             ac.config(fg="#ffffff", bg="#aabb99")
             Delete.config(bg="#aabb99")
-            Percent.config(fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida, wie ich vergessen kann
+            Percent.config(fg="#00aa00", bg="#ffff00")#Ich bin ein Idiot oida. Wie ich kann vergessen?
             Value0.config(fg="#ffffff", bg="#00cccc")
             Value1.config(fg="#ffffff", bg="#880000")
             Value2.config(fg="#ffffff", bg="#cc8800")
@@ -374,7 +408,7 @@ def Scientific_calculator():
             Clear.config(fg = "#ffffff", bg="#000000")
             ac.config(fg="#ffffff", bg="#000000")
             Delete.config(fg="#ffffff", bg="#000000")
-            Percent.config(fg="#ffffff", bg="#000000")#Ich bin ein Idiot oida, wie ich vergessen kann
+            Percent.config(fg="#ffffff", bg="#000000")
             Value0.config(fg="#ffffff", bg="#000000")
             Value1.config(fg="#ffffff", bg="#000000")
             Value2.config(fg="#ffffff", bg="#000000")
@@ -426,12 +460,8 @@ def Scientific_calculator():
             Color.config(fg="#ffffff", bg="#000000")
             sto.config(fg="#ffffff", bg="#000000")
             
-    def Trig():
-        nonlocal option, Trig_option
-        option = True
-        Trig_option = True
-        display1.delete(0, END)
-        display1.insert(0, "Deg (1), Rad (2)")
+
+        
                       
     def do_equal():
         nonlocal Last_ans, option
@@ -439,52 +469,59 @@ def Scientific_calculator():
         
         print("RAW:", expression)
         
-        if not option:
+        if not option or not store:
             try:
                 expression = display1.get()
                 expression = re.sub(r'(\d)(π)', r'\1*\2', expression)
-                expression = re.sub(r'e\(([^)]+)\)', lambda m: f"{(Calc.euler(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'ln\(([^)]+)\)', lambda m: f"{(Calc.ln(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'log\(([^)]+)\)', lambda m: f"{(Calc.log(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'(\d+\.?\d*)!', lambda m: f"{(Calc.factorial(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'√(\d+\.?\d*)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'\(([^)]+)\)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'(\d+\.?\d*)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'\(([^)]+)\)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'(\d+\.?\d*)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'e\(([^)]+)\)', lambda m: f"{(Calc.euler(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'ln\(([^)]+)\)', lambda m: f"{(Calc.ln(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'log\(([^)]+)\)', lambda m: f"{(Calc.log(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'(\d+\.?\d*)!', lambda m: f"{(Calc.factorial(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'√(\d+\.?\d*)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'\(([^)]+)\)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'(\d+\.?\d*)%', lambda m: f"{(Calc.percent(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'\(([^)]+)\)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'(\d+\.?\d*)⁻¹', lambda m: f"{(Calc.Inverse(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'\(([^)]+)\)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'(\d+\.?\d*)²', lambda m: f"{(Calc.Square(eval(m.group(1)))):.10g}", expression)
                 expression = re.sub(r'(\d+\.?\d*)\(', r'\1*(', expression)
-                expression = re.sub(r'\(([^)]+)\)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10f}", expression)
-                expression = re.sub(r'(\d+\.?\d*)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'\(([^)]+)\)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10g}", expression)
+                expression = re.sub(r'(\d+\.?\d*)³', lambda m: f"{(Calc.Cube(eval(m.group(1)))):.10g}", expression)
                 expression = expression.replace("π", str(Calc.pi()))
                 expression = expression.replace("ℯ", str(Calc.empeuler()))
-                expression = re.sub(r'√\(([^)]+)\)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10f}", expression)
+                expression = re.sub(r'√\(([^)]+)\)', lambda m: f"{(Calc.SqrRoot(eval(m.group(1)))):.10g}", expression)
                 expression = expression.replace("ans", str(Last_ans))
                 
                 match Trig_flag:
                     case 1:
                         if not InvTrig:
-                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Degrees.degsine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Degrees.degcosine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Degrees.degtangent(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Degrees.degsine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Degrees.degcosine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Degrees.degtangent(eval(m.group(1)))):.10g}", expression)
                         else:
-                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegsine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegcosine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegtangent(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegsine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegcosine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegtangent(eval(m.group(1)))):.10g}", expression)
                     case 2:
                         if not InvTrig:
-                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Radians.radsine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Radians.radcosine(eval(m.group(1)))):.10f}", expression)
+                            expression = re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Radians.radsine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Radians.radcosine(eval(m.group(1)))):.10g}", expression)
                             expression = re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Radians.radtangent(eval(m.group(1)))):.10}", expression)
                         else: 
-                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradsine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradcosine(eval(m.group(1)))):.10f}", expression)
-                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradtangent(eval(m.group(1)))):.10}", expression)
+                            expression = re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradsine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradcosine(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradtangent(eval(m.group(1)))):.10g}", expression)
                     case 3:
                         pass
                     case 4:
-                        pass
+                        if not InvTrig:
+                            expression = re.sub(r'cosec\(([^)]+)\)', lambda m: f"{(Extra.cossec(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'sec\(([^)]+)\)', lambda m: f"{(Extra.sec(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cot\(([^)]+)\)', lambda m: f"{(Extra.cotangent(eval(m.group(1)))):.10g}", expression)
+                        else:
+                            expression = re.sub(r'cosec⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invSinHyp(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'sec⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invCosHyp(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cot⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invTanHyp(eval(m.group(1)))):.10g}", expression)
                 print(expression)
                 result = eval(expression)#Why does the position of this matter? (Context: I moved this line up and it caused errors)
                 Last_ans = result
@@ -502,8 +539,9 @@ def Scientific_calculator():
                         display2.insert(0, "Math ERROR")#Wenn der Benutzer 
                     case _:
                         display2.delete(0, END)
-                        display2.insert(0, "Syntax ERROR")# Wenn der Benutzer eine Unvollständige oder ungültige Gleichung eingibt, zeigt die Funktion "Syntax Error" an  
-
+                        display2.insert(0, "Syntax ERROR")#Wenn der Benutzer eine Unvollständige oder ungültige Gleichung eingibt, zeigt die Funktion "Syntax Error" an  
+            default()
+            
     Clear = Button(button_frame, text='C', width=11, height=5, command=emptytop, fg="#00aa00", bg="#ffff00")
     ac = Button(button_frame, text='AC', width=11, height=5, command=emptyall, fg="#ffffff", bg="#99bbaa")
     Delete = Button(button_frame, text="Del", width=11, height=5, command=delete, fg="#ffffff", bg="#aabb99")
@@ -524,7 +562,7 @@ def Scientific_calculator():
     Sin = Button(button_frame, text="sin", width=9, height=3, command=lambda: click("sin"), fg="#ffffff", bg="#aa0066")
     Cos = Button(button_frame, text="cos", width=9, height=3, command=lambda: click("cos"), fg="#ffffff", bg="#aa0066")
     Tan = Button(button_frame, text="tan", width=9, height=3, command=lambda: click("tan"), fg="#ffffff", bg="#aa0066")
-    Hyp = Button(button_frame, text="hyp", width=9, height=3, fg="#aaaaaa", bg="#666666")
+    Hyp = Button(button_frame, text="hyp", width=9, height=3, command=hyperbolic, fg="#aaaaaa", bg="#666666")
     time = Button(button_frame, text="°", width=9, height=3, fg="#aaaaaa", bg="#aa0066")
     log = Button(button_frame, text="log", width=9, height=3, command=lambda: click("log"),fg="#ffffff", bg="#0066aa")
     A = Button(button_frame, text = 'A', width=9, height=3, command=lambda: click(A), fg="#ff8800", bg="#ffffff")
