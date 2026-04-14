@@ -292,6 +292,10 @@ def Scientific_calculator():
             Power.config(text = "yˣ")
             display3.delete(0, tk.END)
             
+    def ExtraFunc(): #Rename this later
+        Sin.config(text = "cosec", command=lambda:click("cosec("))
+        Cos.config(text = "sec", command=lambda:click("sec("))
+        Tan.config(text = "cot", command=lambda:click("cot("))
             
 
     def alpha():
@@ -515,13 +519,13 @@ def Scientific_calculator():
                         pass
                     case 4:
                         if not InvTrig:
-                            expression = re.sub(r'cosec\(([^)]+)\)', lambda m: f"{(Extra.cossec(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cosec\(([^)]+)\)', lambda m: f"{(Extra.cosec(eval(m.group(1)))):.10g}", expression)
                             expression = re.sub(r'sec\(([^)]+)\)', lambda m: f"{(Extra.sec(eval(m.group(1)))):.10g}", expression)
                             expression = re.sub(r'cot\(([^)]+)\)', lambda m: f"{(Extra.cotangent(eval(m.group(1)))):.10g}", expression)
                         else:
-                            expression = re.sub(r'cosec⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invSinHyp(eval(m.group(1)))):.10g}", expression)
-                            expression = re.sub(r'sec⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invCosHyp(eval(m.group(1)))):.10g}", expression)
-                            expression = re.sub(r'cot⁻¹\(([^)]+)\)', lambda m: f"{(Hyperbolic.invTanHyp(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cosec⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invcosec(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'sec⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invsec(eval(m.group(1)))):.10g}", expression)
+                            expression = re.sub(r'cot⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invcot(eval(m.group(1)))):.10g}", expression)
                 print(expression)
                 result = eval(expression)#Why does the position of this matter? (Context: I moved this line up and it caused errors)
                 Last_ans = result

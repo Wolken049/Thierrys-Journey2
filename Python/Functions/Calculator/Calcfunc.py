@@ -127,7 +127,7 @@ class Trig:
     
     class Trig5:
         @staticmethod
-        def cossec(a):
+        def cosec(a):
             return 1 / math.sin(a)
         def sec(a):
             return 1 / math.cos(a)

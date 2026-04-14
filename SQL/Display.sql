@@ -1,0 +1,9 @@
+SHOW DATABASES;
+
+USE new_db;
+
+SHOW TABLES;
+
+DESCRIBE users;
+
+SHOW CREATE TABLE users;
