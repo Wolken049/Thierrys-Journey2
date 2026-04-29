@@ -1,3 +1,46 @@
-import random
+class Horse:
+    def __init__(self, Name : str, MaxFenceHeight : int, PercenageSuccess: int):
+        self.Name = Name
+        self.MaxFenceHeight = MaxFenceHeight
+        self.PercentageSuccess = PercenageSuccess
+        
+    def GetName(self):
+        return self.Name
+    def GetMaxFenceHeight(self):
+        return self.MaxFenceHeight
 
-print(random.randint(range(1, 13)))
+Horses = []
+Horses[0] = Horse("Beauty", 150, 72)
+Horses[1] = Horse("Jet", 160, 68)
+
+print(Horses[0], Horses[1])
+
+class Fence:
+    def __init__(self, Height : int, Risk : int):
+        self.Height = Height # Integer
+        self.Risk = Risk #Integer
+    
+    def GetHeight(self):
+        return self.Height
+    def GetRisk(self):
+        return self.Risk
+    
+Course = [-1] * 4
+Count = 0
+try:
+    while True and Count <= 3:        
+        Height_input = input("Please enter a height between 70 and 180 inclusive: ")
+        Height_input = int(Height_input)
+        if Height_input < 70 or Height_input > 180:
+            continue
+        Risk_input = input("Please enter a risk level between 1 and 5 inclusive: ")
+        Risk_input = int(Risk_input)
+        if Risk_input < 1 and Risk_input > 5:
+            continue
+        else:
+            Course[Count] = Fence(Height_input, Risk_input)
+            Count += 1
+            
+except Exception as e:
+    print(f"Error: {e}")
+    

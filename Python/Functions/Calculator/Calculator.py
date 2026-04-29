@@ -463,10 +463,7 @@ def Scientific_calculator():
             Trigo.config(fg="#ffffff", bg="#000000")
             Color.config(fg="#ffffff", bg="#000000")
             sto.config(fg="#ffffff", bg="#000000")
-            
-
-        
-                      
+                           
     def do_equal():
         nonlocal Last_ans, option
         expression = display1.get()

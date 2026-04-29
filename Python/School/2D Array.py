@@ -4,4 +4,4 @@ Matrix = [
     [7, 8, 9]
 ]
 
-print(Matrix)
+print(Matrix[1][2])
