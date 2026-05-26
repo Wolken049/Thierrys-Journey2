@@ -9,7 +9,9 @@ import os
 from Fun import Paths #ofc it won't work with everyone
 
 def Basic_calculator():
-    global Calc
+    global Calc, Set_up
+    
+    Set_up.destroy()
     
     application = Tk()
     application.geometry("400x700")
@@ -153,12 +155,13 @@ def Basic_calculator():
     
     
 def Scientific_calculator():
-    global Calc
+    global Calc, Set_up    
     Degrees = Calc.Trig.Trig1
     Radians = Calc.Trig.Trig2
     Gradians = Calc.Trig.Trig3
     Hyperbolic = Calc.Trig.Trig4
     Extra = Calc.Trig.Trig5
+    
     
     application = tk.Tk()
     application.geometry("450x700")
@@ -687,12 +690,14 @@ def Scientific_calculator():
     application.mainloop()
     
 def Fun_calculator():
-    global Calc
+    global Calc, Set_up
     Degrees = Calc.Trig.Trig1
     Radians = Calc.Trig.Trig2
     Gradians = Calc.Trig.Trig3
     Hyperbolic = Calc.Trig.Trig4
     Extra = Calc.Trig.Trig5
+    
+    Set_up.destroy()
     
     application = tk.Tk()
     application.geometry("450x700")
@@ -1218,6 +1223,8 @@ def Currency_calculator():
     top = Tk()
     top.geometry("600x300")
     top.config(bg = "#888888")
+    
+    Set_up.destroy()
 
     Font = ("Segoe UI", 15)
 
@@ -1275,7 +1282,6 @@ Basic = Button(buttom_frame, text="Basic Calculator", command=Basic_calculator, 
 Scientific = Button(buttom_frame, text="Scientific Calculator", command=Scientific_calculator, padx=60, pady=20, fg = "#333366", bg = "#ccccff")
 Fun = Button(buttom_frame, text="Maybe Calculator", command=Fun_calculator, padx=60, pady=20, fg = "#333366", bg = "#ccccff")
 Currency = Button(buttom_frame, text="Currency Calculator", command=Currency_calculator, padx=60, pady=20, fg="#333366", bg="#ccccff")
-
 
 
 Basic.place(x = 100, y = 100)
