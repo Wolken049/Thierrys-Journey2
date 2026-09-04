@@ -184,25 +184,18 @@ def Scientific_calculator():
         else:
             display1.delete(0, tk.END)
             if Trig_option:
+                display1.delete(0, tk.END)  
+                option = False      
                 match button_value:
                     case 1:
                         Trig_flag = 1
-                        display1.delete(0, tk.END)
-                        option = False
                     case 2:
                         Trig_flag = 2
                         display1.delete(0, END)
-                        option = False
                     case 3:
-                        display1.delete(0, END)
                         display1.insert(0, "Not Available. Click 1 to close")
-                        if button_value == 1:
-                            display1.delete(0, END)
-                            option = False
                     case 4:
-                        Trig_flag = 4
-                        display1.delete(0, END)
-                        option = False
+                        Trig_flag = 5
         default()
     
     current_operator = None
@@ -222,34 +215,39 @@ def Scientific_calculator():
     F = None
     
     PatternsDeg = [
-        (re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegsine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Degrees.degsine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegcosine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Degrees.degcosine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Degrees.invdegtangent(eval(m.group(1)))):.10g}")),
-        (re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Degrees.degtangent(eval(m.group(1)))):.10g}")),
+        (r'sin⁻¹\(([^)]+)\)', lambda m: f"{Degrees.invdegsine(eval(m.group(1))):.10g}"),
+        (r'sin\(([^)]+)\)', lambda m: f"{Degrees.degsine(eval(m.group(1))):.10g}"),
+        (r'cos⁻¹\(([^)]+)\)', lambda m: f"{Degrees.invdegcosine(eval(m.group(1))):.10g}"),
+        (r'cos\(([^)]+)\)', lambda m: f"{Degrees.degcosine(eval(m.group(1))):.10g}"),
+        (r'tan⁻¹\(([^)]+)\)', lambda m: f"{Degrees.invdegtangent(eval(m.group(1))):.10g}"),
+        (r'tan\(([^)]+)\)', lambda m: f"{Degrees.degtangent(eval(m.group(1))):.10g}"),
     ]
     
     PatternsRad = [
-        (re.sub(r'sin⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradsine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'sin\(([^)]+)\)', lambda m: f"{(Radians.radsine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cos⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradsine(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cos\(([^)]+)\)', lambda m: f"{(Radians.radsine(eval(m.group(1)))):.10g}")),        
-        (re.sub(r'tan⁻¹\(([^)]+)\)', lambda m: f"{(Radians.invradtangent(eval(m.group(1)))):.10g}")),
-        (re.sub(r'tan\(([^)]+)\)', lambda m: f"{(Radians.radtangent(eval(m.group(1)))):.10g}"))    
+        (r'sin⁻¹\(([^)]+)\)', lambda m: f"{Radians.invradsine(eval(m.group(1))):.10g}"),
+        (r'sin\(([^)]+)\)', lambda m: f"{Radians.radsine(eval(m.group(1))):.10g}"),
+        (r'cos⁻¹\(([^)]+)\)', lambda m: f"{Radians.invradcosine(eval(m.group(1))):.10g}"),
+        (r'cos\(([^)]+)\)', lambda m: f"{Radians.radcosine(eval(m.group(1))):.10g}"),        
+        (r'tan⁻¹\(([^)]+)\)', lambda m: f"{Radians.invradtangent(eval(m.group(1))):.10g}"),
+        (r'tan\(([^)]+)\)', lambda m: f"{Radians.radtangent(eval(m.group(1))):.10g}")    
     ]
     
-    PatternsGrad = [
-        0
+    PatternsHyp = [
+        (r'sinh⁻¹\(([^)]+)\)', lambda m: f"{Hyperbolic.invsinh(eval(m.group(1))):.10g}"),
+        (r'cosh⁻¹\(([^)]+)\)', lambda m: f"{Hyperbolic.invcosh(eval(m.group(1))):.10g}"),
+        (r'tanh⁻¹\(([^)]+)\)', lambda m: f"{Hyperbolic.invtanh(eval(m.group(1))):.10g}"),
+        (r'sinh\(([^)]+)\)', lambda m: f"{Hyperbolic.sinh(eval(m.group(1))):.10g}"),
+        (r'cosh\(([^)]+)\)', lambda m: f"{Hyperbolic.cosh(eval(m.group(1))):.10g}"),
+        (r'tanh\(([^)]+)\)', lambda m: f"{Hyperbolic.tanh(eval(m.group(1))):.10g}"),
     ]
     
     PatternsExtra = [
-        (re.sub(r'cosec⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invcosec(eval(m.group(1)))):.10g}")),
-        (re.sub(r'sec⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invsec(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cot⁻¹\(([^)]+)\)', lambda m: f"{(Extra.invcot(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cosec\(([^)]+)\)', lambda m: f"{(Extra.cosec(eval(m.group(1)))):.10g}")),
-        (re.sub(r'sec\(([^)]+)\)', lambda m: f"{(Extra.sec(eval(m.group(1)))):.10g}")),
-        (re.sub(r'cot\(([^)]+)\)', lambda m: f"{(Extra.cotangent(eval(m.group(1)))):.10g}"))
+        (r'cosec⁻¹\(([^)]+)\)', lambda m: f"{Extra.invcosec(eval(m.group(1))):.10g}"),
+        (r'sec⁻¹\(([^)]+)\)', lambda m: f"{Extra.invsec(eval(m.group(1))):.10g}"),
+        (r'cot⁻¹\(([^)]+)\)', lambda m: f"{Extra.invcot(eval(m.group(1))):.10g}"),
+        (r'cosec\(([^)]+)\)', lambda m: f"{Extra.cosec(eval(m.group(1))):.10g}"),
+        (r'sec\(([^)]+)\)', lambda m: f"{Extra.sec(eval(m.group(1))):.10g}"),
+        (r'cot\(([^)]+)\)', lambda m: f"{Extra.cotangent(eval(m.group(1))):.10g}")
     ]
     
     display1 = tk.Entry(application, font = entry_font, relief = "ridge", justify = "right", fg = "#ffffff", bg = "#000099")
@@ -299,7 +297,6 @@ def Scientific_calculator():
         Tan.config(text="tan", command=lambda: click("tan("))
         time.config(text="°")
         Hyp.config(text="hyp", command=hyperbolic)
-        Trig_flag = 1
         InvTrig = False
         display3.delete(0, tk.END)
             
@@ -506,7 +503,7 @@ def Scientific_calculator():
             sto.config(fg="#ffffff", bg="#000000")
                            
     def do_equal():
-        nonlocal Last_ans, option, PatternsDeg, PatternsRad, PatternsGrad, PatternsExtra
+        nonlocal Last_ans, option, PatternsDeg, PatternsRad, PatternsExtra
         expression = display1.get()
         changed = True
         
@@ -536,34 +533,22 @@ def Scientific_calculator():
                 expression = expression.replace("ans", str(Last_ans))
                 
                 match Trig_flag:
-                    case 1:
-                        while changed:
-                            original = expression
-                            for pattern, replacement in PatternsDeg:
-                                expression = re.sub(pattern, replacement, expression)
-                            
-                            if expression == original:
-                                changed = False
-
-                    case 2:
-                        while changed:
-                            original = expression
-                            for pattern, replacement in PatternsRad:
-                                expression = re.sub(pattern, replacement, expression)
-                            
-                            if expression == original:
-                                changed = False
-                    case 3:
-                        display2.delete(0, END)
-                        display2.insert(0, "Work in Progress. Use another value")
-                    case 4:
-                        while changed:
-                            original = expression
-                            for pattern, replacement in PatternsExtra:
-                                expression = re.sub(pattern, replacement, expression)
-                            
-                            if expression == original:
-                                changed = False
+                    case 1:  # Degrees
+                        for pattern, replacement in PatternsDeg:
+                            expression = re.sub(pattern, replacement, expression)
+                    case 2:  # Radians
+                        for pattern, replacement in PatternsRad:
+                            expression = re.sub(pattern, replacement, expression)
+                    case 3:  # Gradians
+                        display2.delete(0, tk.END)
+                        display2.insert(0, "Gradians WIP")
+                        return
+                    case 4:  # Hyperbolic
+                        for pattern, replacement in PatternsHyp:
+                            expression = re.sub(pattern, replacement, expression)
+                    case 5:  # Extra
+                        for pattern, replacement in PatternsExtra:
+                            expression = re.sub(pattern, replacement, expression)
                 print(expression)
                 result = eval(expression)#Why does the position of this matter? (Context: I moved this line up and it caused errors)
                 Last_ans = result

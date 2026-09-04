@@ -26,5 +26,10 @@ class Teacher(Person):
     def teach(self):
         return f"{self.name} is teaching {self.subject}."
 
-print(Teacher("Mr. Smith", 40, "Math").teach())
-print(Teacher("Mr. Smith", 40, "Math").greet())
+Julie = Student("Juliette Macron", "15", 5465)
+Smith = Teacher("Mr Smith", "40", "Math")
+
+print(Julie.greet())
+print(Julie.study())
+print(Smith.greet())
+print(Smith.teach())

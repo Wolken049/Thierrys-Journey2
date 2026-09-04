@@ -63,9 +63,7 @@ class Refugee(Immigrants):
         return f"{self.FName}, {self.SName}, {self.ID}, ({self.CofO}), {self.DoArr}, {self.RoR}, {self.DoAp}"
     
 Jack = Immigrants("Jack", "Spelamann", "US04765", "United States of America", datetime.date(2025, 12, 1))
-Jamal = Illegal("Jamal", "Owoko", "NG0034", "Nigeria", "N/A", datetime.date(2026, 3, 5), "N/A", "Dresden")
+Jamal = Illegal("Jamal", "Owoko", "NG0034", "Nigeria", "N/A", datetime.date(2026, 12, 5), "N/A", "Dresden")
 
 print(Jack.CofO)
 print(Jamal.FName)
-
-

@@ -25,7 +25,7 @@ mydb = get_db_connection()
 
 #Retrieves contents within a table. z.B: Students
 
-Defaul_Font = ("Times New Roman", 15)
+Default_Font = ("Times New Roman", 15)
 Title_Font = ("Times New Roman", 25)
 
 #Creating the GUI
@@ -47,13 +47,13 @@ Title.place(x = 180, y = 0)
 # Define Form and Entries
 class Form:
     def __init__(self):
-        self.First_Name = Entry(Form_Frame, font = Defaul_Font,  fg="#000000")
-        self.Last_Name = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
-        self.Sex = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
-        self.Email = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
-        self.Age = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
-        self.Year = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
-        self.Address = Entry(Form_Frame, font = Defaul_Font, fg="#000000")
+        self.First_Name = Entry(Form_Frame, font = Default_Font,  fg="#000000")
+        self.Last_Name = Entry(Form_Frame, font = Default_Font, fg="#000000")
+        self.Sex = Entry(Form_Frame, font = Default_Font, fg="#000000")
+        self.Email = Entry(Form_Frame, font = Default_Font, fg="#000000")
+        self.Age = Entry(Form_Frame, font = Default_Font, fg="#000000")
+        self.Year = Entry(Form_Frame, font = Default_Font, fg="#000000")
+        self.Address = Entry(Form_Frame, font = Default_Font, fg="#000000")
         
         self.First_Name.place(x = 95, y = 120, width = 200, height = 28)
         self.Last_Name.place(x = 390, y = 120, width = 200, height = 28)
@@ -63,13 +63,13 @@ class Form:
         self.Year.place(x = 350, y = 210, width = 200, height = 28)
         self.Address.place(x = 50, y = 580, width = 500, height = 28)
         
-        First_Name_Entry = Label(Form_Frame, font = Defaul_Font, text = "First Name", fg = "#000000")
-        Last_Name_Entry = Label(Form_Frame, font = Defaul_Font, text = "Last Name", fg = "#000000")
-        Sex_Entry = Label(Form_Frame, font = Defaul_Font, text = "Sex", fg = "#000000")
-        Email_Entry = Label(Form_Frame, font = Defaul_Font, text = "Email", fg = "#000000")
-        Age_Entry = Label(Form_Frame, font = Defaul_Font, text = "Age", fg = "#000000")
-        Year_Entry = Label(Form_Frame, font = Defaul_Font, text = "Year", fg = "#000000")
-        Address_Entry = Label(Form_Frame, font = Defaul_Font, text = "Address", fg = "#000000")
+        First_Name_Entry = Label(Form_Frame, font = Default_Font, text = "First Name", fg = "#000000")
+        Last_Name_Entry = Label(Form_Frame, font = Default_Font, text = "Last Name", fg = "#000000")
+        Sex_Entry = Label(Form_Frame, font = Default_Font, text = "Sex", fg = "#000000")
+        Email_Entry = Label(Form_Frame, font = Default_Font, text = "Email", fg = "#000000")
+        Age_Entry = Label(Form_Frame, font = Default_Font, text = "Age", fg = "#000000")
+        Year_Entry = Label(Form_Frame, font = Default_Font, text = "Year", fg = "#000000")
+        Address_Entry = Label(Form_Frame, font = Default_Font, text = "Address", fg = "#000000")
         
         First_Name_Entry.place(x = 0, y = 120)
         Last_Name_Entry.place(x = 300, y = 120)
@@ -83,7 +83,7 @@ class Form:
         
         #If statement to confirm if Sex is Male/Female
         
-        self.Complete = Button(Form_Frame, font = Defaul_Font, text = "Complete", command=self.Completed)
+        self.Complete = Button(Form_Frame, font = Default_Font, text = "Complete", command=self.Completed)
         self.Complete.place(x = 260, y = 700)
         
     def Get_Base_Info(self):

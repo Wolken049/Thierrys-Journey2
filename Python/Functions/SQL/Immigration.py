@@ -4,40 +4,8 @@ from dotenv import load_dotenv
 from mysql.connector import connect
 from tkinter import *
 import tkinter as tk
+from Config import *
 
-load_dotenv()
-
-#connecting Database
-
-def get_db_connection():
-    try:
-        return connect(
-            host = os.getenv("DB_HOST"),
-            user = os.getenv("DB_User"),
-            password = os.getenv("DB_Pass"),
-            database = os.getenv("DB_Immigration")
-        )
-    except Exception as e:
-        print(f"Error connecting to MySQL: {e}")
-        return None
-
-mydb = get_db_connection()
-
-#Global Consonants
-
-DEFAULT_FONT = ("Times New Roman", 20)
-DEFAULT_COLOUR = "#000000"
-FORM_SIZE = "700x650"
-
-ValidVisa = ["STUDENT", "WORK", "TOURIST"]
-ValidReasonOfTravel = ["WORK", "SCHOOL", "TOURING", "CHAPERONE"]
-
-#Creating the GUI
-
-
-
-SEX = ["MALE", "FEMALE"]
-VISA = ["STUDENT", "WORK", "TOURIST"]
 
 #Define Form and Entries
 class Immigrant:
@@ -68,8 +36,8 @@ class Immigrant:
         self.Sex.place(x = 70, y = 180, width = 100, height = 40)
         self.Age.place(x = 280, y = 180, width = 100, height = 40)
         self.Visa.place(x = 530, y = 180, width = 100, heigh = 40)
-        self.Reason.place(x = 50, y = 330, width = 550, height = 40)
-        self.Address.place(x = 50, y = 450, width = 550, height = 40)
+        self.Reason.place(x = 50, y = 360, width = 550, height = 40)
+        self.Address.place(x = 50, y = 480, width = 550, height = 40)
 
         First_Name_Label = Label(self.Form_Frame, font = DEFAULT_FONT, text = "First Name", fg = DEFAULT_COLOUR)
         Last_Name_Label = Label(self.Form_Frame, font = DEFAULT_FONT, text = "Last Name", fg = DEFAULT_COLOUR)
@@ -84,8 +52,29 @@ class Immigrant:
         Sex_Label.place(x = 0, y = 180)
         Age_Label.place(x = 225, y = 180)
         Visa_Label.place(x = 450, y = 180)
-        Reason_Label.place(x = 280, y = 293)
-        Address_Label.place(x = 280, y = 410)
+        Reason_Label.place(x = 280, y = 323)
+        Address_Label.place(x = 280, y = 440)
+        
+        self.cities_dict = get_cities()
+        
+        Keys_var = tk.StringVar(value=list(self.cities_dict))
+        
+        lb = tk.Listbox(self.Form_Frame, listvariable=Keys_var)
+        
+        def get_selected_value(event):
+            selected_index = lb.curselection()[0]
+            display_text = lb.get(selected_index)
+            db_code = self.cities_dict.get(display_text)
+            
+        City_Label = Label(self.Form_Frame, text = "City", font = DEFAULT_FONT, fg = DEFAULT_COLOUR)
+        City_Label.place(x = 0, y = 250)
+        
+        self.City = Entry(self.Form_Frame, font = DEFAULT_FONT, fg=DEFAULT_COLOUR, state = "readonly")
+        self.City.place(x = 70, y = 250)
+        
+        City_Button = Button(self.Form_Frame, text = "^", command = self.City_Options)
+        City_Button.pack()
+        City_Button.place(x = 50, y = 250, width = 20, height = 40)
         
         FM_Button = Button(self.Form_Frame, text = "^", command = self.FM_Options)
         FM_Button.pack()
@@ -97,12 +86,38 @@ class Immigrant:
         
         Reason_Button = Button(self.Form_Frame, text = "^", command = self.Reason_Options)
         Reason_Button.pack()
-        Reason_Button.place(x = 30, y = 330, width= 20, height = 40)
+        Reason_Button.place(x = 30, y = 360, width= 20, height = 40)
         
         self.Complete = Button(self.Form_Frame, font = DEFAULT_FONT, text = "COMPLETE", command = self.Completed)
-        self.Complete.place(x = 240, y = 520)
+        self.Complete.place(x = 240, y = 550)
         
         self.Immigration.mainloop()
+        
+    def City_Options(self):
+        def insert(event):
+            chosen = Lb.curselection()
+            if not chosen:
+                return
+        
+            selected_city = Lb.get(chosen[0])
+            
+            self.City.configure(state = NORMAL)
+            self.City.delete(0, END)
+            self.City.insert(0, selected_city)
+            self.City.configure(state = "readonly")
+
+            Lb.destroy()
+            
+        Lb = Listbox(self.Immigration, width = 49, height = LIST_HEIGHT)
+        
+        for city in self.cities_dict.keys():
+            Lb.insert(END, city)
+        
+        Lb.bind("<ButtonRelease-1>", insert)
+        Lb.pack()
+        Lb.place(x = 85, y = 300)
+    
+            
     
     def FM_Options(self):
         def insert(event):
@@ -120,10 +135,31 @@ class Immigrant:
                     self.Sex.insert(0, "Female")
                     self.Sex.configure(state = "readonly")
                     Lb.destroy()
-        Lb = Listbox(self.Immigration, width = 16, height = 2)
+                elif list == 2:
+                    self.Sex.configure(state = NORMAL)
+                    self.Sex.delete(0, END)
+                    self.Sex.insert(0, "Non-Binary")
+                    self.Sex.configure(state = "readonly")
+                    Lb.destroy()
+                elif list == 3:
+                    self.Sex.configure(state = NORMAL)
+                    self.Sex.delete(0, END)
+                    self.Sex.insert(0, "Other")
+                    self.Sex.configure(state = "readonly")
+                    Lb.destroy()
+                elif list == 4:
+                    self.Sex.configure(state = NORMAL)
+                    self.Sex.delete(0, END)
+                    self.Sex.insert(0, "Prefer not to say")
+                    self.Sex.configure(state = "readonly")
+                    Lb.destroy()
+        Lb = Listbox(self.Immigration, width = 16, height = LIST_HEIGHT)
          
         Lb.insert(0, "Male")
         Lb.insert(1, "Female")
+        Lb.insert(2, "Non-Binary")
+        Lb.insert(3, "Other")
+        Lb.insert(4, "Prefer not to say")
         
         Lb.bind('<Double-1>', insert)
         Lb.pack()
@@ -150,8 +186,9 @@ class Immigrant:
                     self.Visa.delete(0, END)
                     self.Visa.insert(0, "Toursit")
                     self.Visa.configure(state = "readonly")
+                Lb.destroy()
                     
-        Lb = Listbox(self.Immigration, width = 16, height = 2)
+        Lb = Listbox(self.Immigration, width = 16, height = LIST_HEIGHT)
          
         Lb.insert(0, "Student")
         Lb.insert(1, "Work")
@@ -186,7 +223,7 @@ class Immigrant:
                     self.Reason.insert(0, "Chaperone")
                     self.Reason.configure(state = "readonly")
                 
-        Lb = Listbox(self.Immigration, width = 91, height = 2)
+        Lb = Listbox(self.Immigration, width = 91, height = LIST_HEIGHT)
          
         Lb.insert(0, "School")
         Lb.insert(1, "Work")
@@ -211,6 +248,8 @@ class Immigrant:
     
     def Completed(self):
         global mydb, SEX, VISA
+        Adult = False
+        Student = False
         try:
             Data = self.Get_Base_Info()
             Age_Verify = self.Age.get()
@@ -230,6 +269,11 @@ class Immigrant:
                                                      f"You are too young to {Reason_Verify}",
                                                      "Achtung",
                                                      0x30)
+            if self.Age.get() >= 18:
+                Adult = True
+            
+            if self.Visa.get() == "Student":
+                Student = True
                 
                 mycursor = mydb.cursor()
 
@@ -259,167 +303,53 @@ class Immigrant:
                 self.Address.delete(0, END)
                 self.Reason.delete(0, END)
                 
-                self.Questions = tk.Toplevel()
-                self.Questions.geometry("600x300")
-                self.Questions.title("Question Record")
-                self.Questions.config(bg="#aaaaaa")
+                if Adult is True:
+                    self.Questions = tk.Toplevel()
+                    self.Questions.geometry("600x300")
+                    self.Questions.title("Question Record")
+                    self.Questions.config(bg="#aaaaaa")
 
-                Question_Frame = Frame(self.Questions, bg = "#cccccc")
-                Question_Frame.pack(fill = "both", expand = True, padx = 25, pady = 20)
+                    Question_Frame = Frame(self.Questions, bg = "#cccccc")
+                    Question_Frame.pack(fill = "both", expand = True, padx = 25, pady = 20)
 
-                Question_Title = Label(Question_Frame, font = DEFAULT_FONT, text = "Questions", fg = DEFAULT_COLOUR)
-                Question_Title.pack(fill = "both", expand = True, padx = 25, pady = 20)
-                Question_Title.place(x = 180, y = 0)
+                    Question_Title = Label(Question_Frame, font = DEFAULT_FONT, text = "Questions", fg = DEFAULT_COLOUR)
+                    Question_Title.pack(fill = "both", expand = True, padx = 25, pady = 20)
+                    Question_Title.place(x = 180, y = 0)
+                    
                 
+                    self.Guardian_label = Label(Question_Frame, font = DEFAULT_FONT, text = "Are you acommpanying any children?", fg = DEFAULT_COLOUR)
+                    self.Guardian_label.pack(fill = "both", expand = True, padx = 25, pady = 20)
+                    self.Guardian_label.place(x = 180, y = 0)
+                    
+                    self.Minor_label = Label(Question_Frame, font = DEFAULT_FONT, text = "Are you being acommpanied with any guardian?", fg = DEFAULT_COLOUR)
+                    self.Minor_label.pack(fill = "both", expand = True, padx = 25, pady = 20)
+                    self.Minor_label.place(x = 180, y = 0)
+                    
+                    self.Guardian_Yes = Button(Question_Frame, font = DEFAULT_FONT, text = "YES", fg = DEFAULT_COLOUR, command = self.Guardian_yes)
+                    self.Guardian_No = Button(Question_Frame, font = DEFAULT_FONT, text = "NO", fg = DEFAULT_COLOUR, command = self.Immigration.destroy)
+                    
+                    self.Minor_Yes = Button(Question_Frame, font = DEFAULT_FONT, text = "YES", fg = DEFAULT_COLOUR, command = self.Guardiaan_yes)
+                    self.Minor_No = Button(Question_Frame, font = DEFAULT_FONT, text = "NO", fg = DEFAULT_COLOUR, command = self.Immigration.destroy)
                 
-                self.Guardian_label = Label(Question_Frame, font = DEFAULT_FONT, text = "Are you acommpanying any children?", fg = DEFAULT_COLOUR)
-                self.Guardian_label.pack(fill = "both", expand = True, padx = 25, pady = 20)
-                self.Guardian_label.place(x = 180, y = 0)
-                
-                self.Minor_label = Label(Question_Frame, font = DEFAULT_FONT, text = "Are you being acommpanied with any guardian?", fg = DEFAULT_COLOUR)
-                self.Minor_label.pack(fill = "both", expand = True, padx = 25, pady = 20)
-                self.Minor_label.place(x = 180, y = 0)
-                
-                self.Guardian_Yes = Button(Question_Frame, font = DEFAULT_FONT, text = "YES", fg = DEFAULT_COLOUR, command = self.parent_yes)
-                self.Guardian_No = Button(Question_Frame, font = DEFAULT_FONT, text = "NO", fg = DEFAULT_COLOUR, command = self.Immigration.destroy)
-                
-                self.Minor_Yes = Button(Question_Frame, font = DEFAULT_FONT, text = "YES", fg = DEFAULT_COLOUR, command = self.parent_yes)
-                self.Minor_No = Button(Question_Frame, font = DEFAULT_FONT, text = "NO", fg = DEFAULT_COLOUR, command = self.Immigration.destroy)
-                
+                if Student is True:
+                    if Adult is True:
+                        Adult_Student()
+                    else:
+                        Child_Student()
                 
                 self.Immigration.destroy()
             
         except Exception as e:
             ctypes.windll.user32.MessageBoxW(0, f"{e}", "Achtung", 0x30)
 
-    def parent_yes(self):
+    def Guardian_yes(self):
         self.Questions.destroy()
+        Guardian()
+        
         
         Guardian_Form = Guardian(self.Immigration)
     def Type_student(self):
-        pass
-
-class Guardian(Immigrant):
-    global DEFAULT_FONT, DEFAULT_COLOUR, mydb
-    def __init__(self):
-        self.Guardian = tk.Tk()
-        self.Guardian.geometry(FORM_SIZE)
-        self.Guardian.title("Guardian Record")
-        self.Guardian.config(bg="#aaaaaa")
-        
-        self.Form_Frame = Frame(self.Guardian, bg = "#cccccc")
-        self.Form_Frame.pack(fill = "both", expand = True, padx = 25, pady = 20)
-
-        Title = Label(self.Form_Frame, font = DEFAULT_FONT, text = "Guardian form", fg = DEFAULT_COLOUR)
-        Title.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        Title.place(x = 240, y = 0)
-        
-        self.Email = Entry(self.Form_Frame, font = DEFAULT_FONT,  fg=DEFAULT_COLOUR)
-        self.No_Children = Entry(self.Form_Frame, font = DEFAULT_FONT, fg=DEFAULT_COLOUR)
-        self.Relationship = Entry(self.Form_Frame, font = DEFAULT_FONT, fg = DEFAULT_COLOUR, state = "readonly")
-        self.Email.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        self.No_Children.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        self.Relationship.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        
-
-        Email_Label = Label(self.Form_Frame, text = "Email", font = DEFAULT_FONT)
-        No_Children_Label = Label(self.Form_Frame, text = "Number of Children", font = DEFAULT_FONT)
-        Relationship_Label = Label(self.Form_Frame, text = "Relationship", font = DEFAULT_FONT)
-        Email_Label.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        No_Children_Label.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        Relationship_Label.pack(fill = "both", expand = True, padx = 25, pady = 20)
-        
-        Email_Label.place(x = 15, y = 120)
-        No_Children_Label.place(x = 15, y = 230)
-        Relationship_Label.place(x = 15, y = 340)
-        self.Email.place(x = 90, y = 120, width = 300, height = 35)
-        self.No_Children.place(x = 250, y = 230, width = 300, height = 35)
-        self.Relationship.place(x = 180 , y = 340, width = 300, height = 35)
-        
-        Relationship_Button = Button(self.Form_Frame, font = DEFAULT_FONT, text = "^", command = self.Relationship_options)
-        Relationship_Button.pack()
-        Relationship_Button.place(x = 160, y = 340, width = 20, height = 40)
-        
-        self.Complete = Button(self.Form_Frame, font = DEFAULT_FONT, text = "COMPLETE", command = self.Completed)
-        self.Complete.place(x = 240, y = 520)
-        
-        self.Guardian.mainloop()
-    
-    def Relationship_options(self):
-        def insert(event):
-            chosen = Lb.curselection()
-            for list in chosen:
-                if list == 0:
-                    self.Relationship.configure(state = NORMAL)
-                    self.Relationship.delete(0, END)
-                    self.Relationship.insert(0, "Family")
-                    self.Relationship.configure(state = "readonly")
-                elif list == 1:
-                    self.Relationship.configure(state = NORMAL)
-                    self.Relationship.delete(0, END)
-                    self.Relationship.insert(0, "Teacher")
-                    self.Relationship.configure(state = "readonly")
-                elif list == 2:
-                    self.Relationship.configure(state = NORMAL)
-                    self.Relationship.delete(0, END)
-                    self.Relationship.insert(0, "Foster")
-                    self.Relationship.configure(state = "readonly")
-                elif list == 3:
-                    self.Relationship.configure(state = NORMAL)
-                    self.Relationship.delete(0, END)
-                    self.Relationship.insert(0, "Court Appointment")
-                    self.Relationship.configure(state = "readonly")
-                elif list == 4:
-                    self.Relationship.configure(state = NORMAL)
-                    self.Relationship.delete(0, END)
-                    self.Relationship.insert(0, "Chaperone")
-                    self.Relationship.configure(state = "readonly")
-        
-        Lb = Listbox(self.Guardian, width = 53, height = 2)
-         
-        Lb.insert(0, "Family")
-        Lb.insert(1, "Teacher")
-        Lb.insert(2, "Foster")
-        Lb.insert(3, "Court Appointed")
-        Lb.insert(4, "Chaperone")
-        
-        Lb.bind('<Double-1>', insert)
-        Lb.pack()
-        Lb.place(x = 185, y = 400)
-            
-    def Child(self):
-        for x in range(self.No_Children):
-            Immigrant()
-            Child_Student(self.Immigration)   
-    def Completed(self):
-        try:
-            Data = self.Get_Base_Info()
-            
-            if self.No_Children.get() is not int or self.No_Children.get() < 0:
-                ctypes.windll.user32.MessageBoxW(0, "Enter the number of children you are with", "Achtung", 0x30)
-            else:
-                mycursor = mydb.cursor()
-
-                sql = "INSERT INTO Guardian_Table (Email, No_Children, Relationship) VALUES (%s, %s, %s)"
-
-                val = (
-                Data["Eamil"], 
-                Data["No_Children"],
-                Data["Relationship"]
-                )
-            
-                mycursor.execute(sql, val)
-                mydb.commit()
-                print("Data successfully committed!")
-                
-                self.Email_Entry.delete(0, END)
-                self.No_Children_Entry.delete(0, END)
-                
-                
-        except Exception as e:
-            ctypes.windll.user32.MessageBoxW(0, f"{e}", "Achtung", 0x30)
-            
-        
+        pass      
 
 class Child_Student(Immigrant):
     global DEFAULT_FONT
@@ -474,7 +404,10 @@ class Child_Student(Immigrant):
                 
         except Exception as e:
             ctypes.windll.user32.MessageBoxW(0, f"{e}", "Achtung", 0x30)
+
+class Adult_Student(Immigrant):
+    def __init__(self):
+        pass
             
 
 Immigrant()
-Guardian()
