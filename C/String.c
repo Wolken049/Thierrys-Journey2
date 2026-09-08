@@ -1,8 +1,9 @@
 #include <stdio.h>
 
-char str[] = "Thierry";
+char name[] = "Thierry";
+char  hobby[] = "Coding";
 
 int main() {
-    printf("My name is %s\n", str);
+    printf("My name is %s and my hobby is %s\n", name, hobby);
     return 0;
-}// test
+}
