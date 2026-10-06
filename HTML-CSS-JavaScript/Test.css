@@ -1,0 +1,42 @@
+body {
+    background: linear-gradient(45deg, #000000, #ffffff)
+}
+h1 {
+    color: #ffffff; text-align: center;
+}
+
+@keyframes myLink {
+    0% {
+        color: #ff0000;
+    }
+    16% {
+        color: #ffff00;
+    }
+    48% {
+        color: #00ff00;
+    }
+    64% {
+        color: #00ffff;
+    }
+    80% {
+        color: #0000ff;
+    }
+    96% {
+        color: #ff00ff;
+    }
+    100% {
+        color: #ff0000;
+    }
+}
+
+a:link {
+    color: #ffffff;
+}
+a:hover {
+    animation-name: myLink;
+    animation-duration: 4s;
+    animation-iteration-count: 100;
+}
+a:visited {
+    color: #ffffff;
+}
