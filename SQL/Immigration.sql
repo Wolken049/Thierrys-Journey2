@@ -1,3 +1,6 @@
+/*
+DISCLAIMER: This project is merely made for fun and the purpose of learning how to program in SQL. I do not have any relationship with any of the Universities listed before nor will I be making a profit from this project. Thank you for reading
+*/
 CREATE DATABASE Immigrant;
 USE Immigrant;
 
