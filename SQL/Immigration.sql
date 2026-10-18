@@ -6,7 +6,7 @@ CREATE TABLE Immigrant_Table (
     First_Name VARCHAR(40) NOT NULL,
     Last_Name VARCHAR(40) NOT NULL,
     Age INT NOT NULL,
-    Sex ENUM('Male', 'Female') NOT NULL,
+    SEX ENUM('Male', 'Female', 'Non-Binary', 'Other', 'Prefer not to say') NOT NULL,
     Visa ENUM('Student', 'Work', 'Tourist') NOT NULL,
     ReasonOfTravel ENUM('Work', 'School', 'Touring', 'Chaperone'),
     Address VARCHAR(100) NOT NULL
@@ -51,8 +51,8 @@ CREATE TABLE Adult_Student(
 );
 
 SHOW Tables;
-INSERT INTO City_Table(City_ID, City_Name, State_Name) 
-VALUES ("CHZSCH", "Chemitz", "Saxony"),
+INSERT INTO City_Table(City_ID, City_Name, State_Name) VALUES
+("CHZSCH", "Chemitz", "Saxony"),
 ("KLHBWG", "Karlsruhe", "Baden-Württenburg"),
 ("BERBER", "Berlin", "Berlin"),
 ("DRSSCH", "Dresden", "Saxony"),
@@ -62,8 +62,26 @@ VALUES ("CHZSCH", "Chemitz", "Saxony"),
 ("FRIBWG", "Freiburg im Breisgua", "Baden-Würtenburg"),
 ("HNNNSY", "Hannover", "Lower-Saxony"),
 ("COBBYN", "Coburg", "Bavaria"),
+("MUNBYN", "Munich", "Bavaria"),
 ("ZTTSCH", "Zittau", "Saxony"),
 ("NRDTUR", "Nordhaus", "Thuringia"),
 ("KOESAT", "Köthen", "Saxony-Anhalt"),
-("STGBWG", "Stuttgart", "Baden-Württemburg"),
-("KLTRHP", "Kaiserslauten", "Rheinland-Pfatz");
+("STGBWG", "Stuttgard", "Baden-Württenburg"),
+("GRLSCH", "Görlitz", "Saxony"),
+("BERSAT", "Bernburg", "Saxony-Anhalt"),
+("KLTRHP", "Kaiserlauten", "Rheinland-Platz");
+
+INSERT INTO School_Table(School_ID, School_Name, City_ID, Address) VALUES
+("HSHZITT_Z", "Hochschule Zittau/Görlitz - Campus Zittau", "ZTTSCH", "Theodor-Körner-Allee 16"),
+("HSHZITT_G", "Hochschule Zittau/Görlitz - Campus Görlitz", "GRLSCH", "Brückenstraße 1"),
+("HSHMITT", "Hochschule Mittweida", "MITSCH", "Technikumplatz 17"),
+("STKMITT", "Studienkolleg Mittweida", "MITSCH", "Falkepl. 2"),
+("STKSCHS", "Studienkolleg Sachsen", "LPZSCH", "Lumumbastraße 4"),
+("STKCOBG", "Studienkolleg Coburg", "COBBYN", "Friedrich-Streib-Straße 2"),
+("HSHHTWD", "Hochschule für Technik und Wirtschaft Dresden", "DRSSCH", "Friedrich-List-Platz 1"),
+("UNITUB", "Technische Universität Berlin", "BERBER", "Straße des 17. Juni 135"),
+("UNITUD", "Technische Universität Dresden", "DRSSCH", "Helmholtzstraße 10"),
+("UNIFÜB", "Freie Üniversität Berlin", "BERBER", "Goethestraße 49"),
+("HSHDRES", "Fachhochschule Dresden", "DRSSCH", "Güntzstraße 1"),
+("HSHANHT", "Hochschule Anhalt", "BERSAT", "Strenzfelder Allee 28"),
+("UNITUM", "Technische Universität München", "MUNBYN", "Arcisstraße 21");
